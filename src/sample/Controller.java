@@ -62,17 +62,16 @@ public class Controller {
 
     public void creation(int nbTextField, int nbLignes, int nbColonnes, TextField[] tableau, GridPane matrice){
 
-
         for (int i = 0; i< nbTextField; i++){
             tableau[i] = new TextField();
 
-            matrice.add(tableau[i], i%nbColonnes, (int) (i/nbLignes));
+            matrice.add(tableau[i], i%(nbColonnes), (i/nbLignes));
         }
     }
 
+
     @FXML
     Button somme;
-
     public void addition(){
 
         if (resultat1.equals(resultat3) && resultat2.equals(resultat4)) {
@@ -96,7 +95,6 @@ public class Controller {
     }
     @FXML
     Button difference;
-
     public void soustraction(){
         if (resultat1.equals(resultat3) && resultat2.equals(resultat4)) {
             //Si les dimensions sont pareils
@@ -120,7 +118,6 @@ public class Controller {
 
     @FXML
     Button hadam;
-
     public void hadamard(){
         if (resultat1.equals(resultat3) && resultat2.equals(resultat4)) {
             //Si les dimensions sont pareils
@@ -150,16 +147,27 @@ public class Controller {
     Button scalaireB;
     @FXML
     TextField produitNbB;
+    public void multiScalaire(){                    //probleme : affiche les 2 en même temps...  code pareil...
+        int[] corolaireA = new int[Integer.parseInt(resultat1)* Integer.parseInt(resultat2)];
 
-    public void multiScalaire(){
-        int[] corolaire = new int[tableau1.length];
-
-        if (!produitNbA.getText().isEmpty()){
-            for (int i = 0; i<tableau1.length; i++){
-                //corolaire[i] = tableau1[i] * Integer.parseInt(produitNbA.getText());           // rendu ici
+        if (!produitNbA.getText().isEmpty()){ //Si la case n'est pas vide
+            for (int i = 0; i<corolaireA.length; i++){
+                corolaireA[i] = Integer.parseInt(tableau1[i].getText()) * Integer.parseInt(produitNbA.getText());
             }
-
+            solo(corolaireA, Integer.parseInt(resultat1), Integer.parseInt(resultat2));
+            produitNbA.setText("");
         }
+
+        int[] corolaireB = new int[Integer.parseInt(resultat3)* Integer.parseInt(resultat4)];
+        if (!produitNbB.getText().isEmpty()){ //Si la case n'est pas vide
+            for (int i = 0; i<corolaireB.length; i++){
+                corolaireB[i] = Integer.parseInt(tableau2[i].getText()) * Integer.parseInt(produitNbB.getText());
+            }
+            solo(corolaireB, Integer.parseInt(resultat3), Integer.parseInt(resultat4));
+            produitNbB.setText("");
+        }
+
+
 
     }
 
@@ -228,13 +236,13 @@ public class Controller {
 
     }
 
-    public void solo(int[] corolaire){            // à embellir plus tard aussi
+    public void solo(int[] corolaire, int lignes, int colonnes){            // à embellir plus tard aussi
 
         GridPane reponse = new GridPane();
 
         for (int i = 0; i< corolaire.length; i++){
-
-            reponse.add(new Label(String.valueOf(corolaire[i])), i%Integer.parseInt(resultat2), (int) (i/ Integer.parseInt(resultat3)));
+            //ajouter les valeurs au gridpane
+            reponse.add(new Label(String.valueOf(corolaire[i])), i%colonnes, (int) (i/lignes));
         }
 
         Dialog dialog = new Dialog();
@@ -242,6 +250,7 @@ public class Controller {
         dialog.getDialogPane().getButtonTypes().add(
                 new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
         );
+
         dialog.showAndWait();
 
     }
