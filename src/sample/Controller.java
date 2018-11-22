@@ -26,7 +26,7 @@ public class Controller {
      */
 
 
-    public void dialog(){
+    public void dialog(){ //try catch
         TextInputDialog ligneA = new TextInputDialog();
         ligneA.setTitle("Matrice A");
         ligneA.setContentText("Entrez le nombre de lignes");
@@ -213,7 +213,10 @@ public class Controller {
 
     public void conversion(){
 
+        for (int i = 0; i < tableau1.length; i++){
 
+
+        }
 
     }
 
