@@ -177,6 +177,38 @@ public class Controller {
         }
     }
 
+    public void produitVectoriel(){
+
+        int[] resultat = new int[3];
+
+        if (tableau1.length == 3 && tableau2.length == 3){
+
+            for(int i = 0; i < resultat.length; i++){
+
+                resultat[0] = (Integer.parseInt(tableau1[1].getText())*Integer.parseInt(tableau2[2].getText())) -
+                        (Integer.parseInt(tableau1[2].getText())*Integer.parseInt(tableau2[1].getText()));
+
+                resultat[1] = -1*(Integer.parseInt(tableau1[2].getText())*Integer.parseInt(tableau2[0].getText())) -
+                        (Integer.parseInt(tableau1[0].getText())*Integer.parseInt(tableau2[2].getText()));
+
+                resultat[2] = (Integer.parseInt(tableau1[0].getText())*Integer.parseInt(tableau2[1].getText())) -
+                        (Integer.parseInt(tableau1[1].getText())*Integer.parseInt(tableau2[0].getText()));
+            }
+
+            reponse(resultat);
+        }
+        else {
+                                            // idem
+        }
+
+    }
+
+    public void conversion(){
+
+
+
+    }
+
 
     public void reponse(int[] corolaire){            // à embellir plus tard
 
