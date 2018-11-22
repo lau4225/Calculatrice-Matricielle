@@ -93,7 +93,7 @@ public class Controller {
                 reponse(resultat);
         }
         else {
-                                                // dialog à faire si les dimensions ne concordent pas
+             wrongDimensions();
         }
 
     }
@@ -115,9 +115,7 @@ public class Controller {
             }
             reponse(resultat);
         }
-        else {
-                                                                // dialog à faire si les dimensions ne concordent pas
-        }
+        else { wrongDimensions(); }
     }
 
     @FXML
@@ -138,9 +136,7 @@ public class Controller {
             }
             reponse(resultat);
         }
-        else {
-            // dialog à faire si les dimensions ne concordent pas
-        }
+        else { wrongDimensions(); }
     }
 
     @FXML
@@ -170,9 +166,6 @@ public class Controller {
             solo(corolaireB, Integer.parseInt(resultat4));
             produitNbB.setText("");
         }
-
-
-
     }
 
 
@@ -184,9 +177,7 @@ public class Controller {
 
 
 
-        }else {
-                                                 // dialog à faire si les dimensions ne concordent pas
-        }
+        }else { wrongDimensions(); }
     }
 
     public void produitVectoriel(){
@@ -260,6 +251,16 @@ public class Controller {
 
         dialog.showAndWait();
 
+    }
+
+    public void wrongDimensions(){ //messafe d'erreur qui va afficher
+
+        Alert alerte = new Alert(Alert.AlertType.INFORMATION);
+        alerte.setTitle("Information importante");
+        alerte.setHeaderText("Les dimensions des matrices A et B ne concordent pas!");
+        alerte.setContentText(
+                "Vous pouvez effectuer une autre opération ou bien cliquer sur démarrer");
+        alerte.showAndWait();
     }
 
 }
