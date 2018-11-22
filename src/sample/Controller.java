@@ -27,6 +27,9 @@ public class Controller {
 
 
     public void dialog(){
+        matA.getChildren().clear();
+        matB.getChildren().clear();
+
         TextInputDialog ligneA = new TextInputDialog();
         ligneA.setTitle("Matrice A");
         ligneA.setContentText("Entrez le nombre de lignes");
@@ -64,8 +67,9 @@ public class Controller {
 
         for (int i = 0; i< nbTextField; i++){
             tableau[i] = new TextField();
-
-            matrice.add(tableau[i], i%(nbColonnes), (i/nbLignes));
+            int col = i%(nbColonnes);
+            int row = (i/nbColonnes);
+            matrice.add(tableau[i], col, row);
         }
     }
 
@@ -89,7 +93,7 @@ public class Controller {
                 reponse(resultat);
         }
         else {
-                                                // dialog à faire si les dimensions ne concordent pas
+                                                            // dialog à faire si les dimensions ne concordent pas
         }
 
     }
@@ -112,7 +116,7 @@ public class Controller {
             reponse(resultat);
         }
         else {
-                                                                // dialog à faire si les dimensions ne concordent pas
+                                                                  // dialog à faire si les dimensions ne concordent pas
         }
     }
 
@@ -135,7 +139,7 @@ public class Controller {
             reponse(resultat);
         }
         else {
-            // dialog à faire si les dimensions ne concordent pas
+                                                            // dialog à faire si les dimensions ne concordent pas
         }
     }
 
@@ -154,7 +158,7 @@ public class Controller {
             for (int i = 0; i<corolaireA.length; i++){
                 corolaireA[i] = Integer.parseInt(tableau1[i].getText()) * Integer.parseInt(produitNbA.getText());
             }
-            solo(corolaireA, Integer.parseInt(resultat1), Integer.parseInt(resultat2));
+            solo(corolaireA, Integer.parseInt(resultat2));
             produitNbA.setText("");
         }
 
@@ -163,7 +167,7 @@ public class Controller {
             for (int i = 0; i<corolaireB.length; i++){
                 corolaireB[i] = Integer.parseInt(tableau2[i].getText()) * Integer.parseInt(produitNbB.getText());
             }
-            solo(corolaireB, Integer.parseInt(resultat3), Integer.parseInt(resultat4));
+            solo(corolaireB, Integer.parseInt(resultat4));
             produitNbB.setText("");
         }
 
@@ -192,7 +196,7 @@ public class Controller {
 
         for (int i = 0; i< corolaire.length; i++){
 
-            reponse.add(new Label(String.valueOf(corolaire[i])), i%Integer.parseInt(resultat2), (int) (i/ Integer.parseInt(resultat3)));
+            reponse.add(new Label(String.valueOf(corolaire[i])), i%Integer.parseInt(resultat2), (int) (i/ Integer.parseInt(resultat2)));
         }
 
         Dialog dialog = new Dialog();
@@ -204,13 +208,13 @@ public class Controller {
 
     }
 
-    public void solo(int[] corolaire, int lignes, int colonnes){            // à embellir plus tard aussi
+    public void solo(int[] corolaire, int colonnes){            // à embellir plus tard aussi
 
         GridPane reponse = new GridPane();
 
         for (int i = 0; i< corolaire.length; i++){
             //ajouter les valeurs au gridpane
-            reponse.add(new Label(String.valueOf(corolaire[i])), i%colonnes, (int) (i/lignes));
+            reponse.add(new Label(String.valueOf(corolaire[i])), i%colonnes, (int) (i/colonnes));
         }
 
         Dialog dialog = new Dialog();
