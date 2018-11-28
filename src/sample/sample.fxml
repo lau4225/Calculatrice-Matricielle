@@ -34,7 +34,6 @@
                         <Button fx:id="difference" alignment="CENTER" mnemonicParsing="false" onAction="#soustraction" prefHeight="25.0" prefWidth="110.0" text="A - B" />
                         <Button fx:id="produit" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#multiplier" prefHeight="25.0" prefWidth="113.0" text="A * B" />
                         <Button fx:id="hadam" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#hadamard" prefHeight="25.0" prefWidth="120.0" text="Hadamard" />
-                  <Button fx:id="produitVecto" mnemonicParsing="false" onAction="#produitVectoriel" prefHeight="25.0" prefWidth="106.0" text="A X B" />
                     </children>
                     <HBox.margin>
                         <Insets left="20.0" right="20.0" />

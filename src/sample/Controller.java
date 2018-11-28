@@ -20,6 +20,10 @@ public class Controller {
     private String resultat3 = "";
     private String resultat4 = "";
 
+    private TextField[][] tab2DA = new TextField[1000][1000];
+    private TextField[][] tab2DB = new TextField[1000][1000];
+
+
     /*
     4/3 = ligne
     4%3 = colone
@@ -54,8 +58,8 @@ public class Controller {
         int nbTextB = Integer.parseInt(resultat3)*Integer.parseInt(resultat4);
 
         try {
-            creation(nbTextA, Integer.parseInt(resultat1), Integer.parseInt(resultat2), tableau1, matA);
-            creation(nbTextB, Integer.parseInt(resultat3), Integer.parseInt(resultat4), tableau2, matB);
+            creation(nbTextA, Integer.parseInt(resultat1), Integer.parseInt(resultat2), tableau1, matA, tab2DA);
+            creation(nbTextB, Integer.parseInt(resultat3), Integer.parseInt(resultat4), tableau2, matB, tab2DB);
         }catch (Exception e){
 
         }
@@ -63,14 +67,23 @@ public class Controller {
 
     }
 
-    public void creation(int nbTextField, int nbLignes, int nbColonnes, TextField[] tableau, GridPane matrice){
+    public void creation(int nbTextField, int nbLignes, int nbColonnes, TextField[] tableau, GridPane matrice, TextField[][] tableau2D){
 
         for (int i = 0; i< nbTextField; i++){
-            tableau[i] = new TextField();
-            int col = i%(nbColonnes);
-            int row = (i/nbColonnes);
-            matrice.add(tableau[i], col, row);
+
+                tableau[i] = new TextField();
+                int col = i%(nbColonnes);
+                int row = (i/nbColonnes);
+                matrice.add(tableau[i], col, row);
         }
+
+        for (int i = 0; i < nbLignes; i++){
+            for (int j = 0; j < nbColonnes; j++){
+
+                tableau2D[i][j] = tableau[i];
+            }
+        }
+
     }
 
 
@@ -177,10 +190,33 @@ public class Controller {
 
 
     public void multiplier(){//Condition pour l'addition : si A (m x n) et B (n x p)
+
         int nombre = Integer.parseInt(resultat1)*Integer.parseInt(resultat4);
         int[] resultat = new int[nombre];
 
         if (resultat2.equals(resultat3)){
+
+            for (int i = 0; i < resultat.length; i++){
+                for (int j = 0; j < resultat.length; j++){
+                    for (int k = 1; k < resultat.length; k++){
+
+                        try{
+                            resultat[i] = Integer.parseInt(tab2DA[i][k].getText())*Integer.parseInt(tab2DB[k][j].getText())
+                                    + Integer.parseInt(tab2DA[i][k + 1].getText())*Integer.parseInt(tab2DB[k][j + 1].getText());
+                        }
+                        catch (NumberFormatException e){
+                        }
+                        catch (NullPointerException e){
+
+                        }
+
+                    }
+                }
+            }
+
+            System.out.println(tab2DA[1][1].getText());
+
+            reponse(resultat);
 
 
 
@@ -193,14 +229,14 @@ public class Controller {
 
         int[] resultat = new int[3];
 
-        if (tableau1.length == 3 && tableau2.length == 3){
+        if (Integer.parseInt(resultat2) ==  3 && Integer.parseInt(resultat4) == 3){
 
             for(int i = 0; i < resultat.length; i++){
 
                 resultat[0] = (Integer.parseInt(tableau1[1].getText())*Integer.parseInt(tableau2[2].getText())) -
                         (Integer.parseInt(tableau1[2].getText())*Integer.parseInt(tableau2[1].getText()));
 
-                resultat[1] = -1*(Integer.parseInt(tableau1[2].getText())*Integer.parseInt(tableau2[0].getText())) -
+                resultat[1] = (Integer.parseInt(tableau1[2].getText())*Integer.parseInt(tableau2[0].getText())) -
                         (Integer.parseInt(tableau1[0].getText())*Integer.parseInt(tableau2[2].getText()));
 
                 resultat[2] = (Integer.parseInt(tableau1[0].getText())*Integer.parseInt(tableau2[1].getText())) -
@@ -211,15 +247,6 @@ public class Controller {
         }
         else {
                                             // idem
-        }
-
-    }
-
-    public void conversion(){
-
-        for (int i = 0; i < tableau1.length; i++){
-
-
         }
 
     }
