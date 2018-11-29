@@ -206,6 +206,7 @@ public class Controller {
     @FXML
     TextField produitNbB;
 
+
     public void multiScalaire(TextField[] tableau, int lignes, int colonnes, TextField facteur) {
         int[] corolaire = new int[lignes * colonnes];
         boolean vide = false;
@@ -238,10 +239,10 @@ public class Controller {
 
     public void determinant(TextField[] tableau, int lignes, int colonnes, String lettre){//Laurie rendu ici
 
+
         //regarder si la matrice est carré
         if (lignes == colonnes){
             //transformer toutes les textfield
-
             int[] tempo = new int[lignes*colonnes];
             int det = 0;
 
@@ -250,7 +251,6 @@ public class Controller {
             }
             switch (lignes){
                 case 1 : repDeterminant(tempo[0], lettre); break;
-
                 case 2 :
                     det = (tempo[0]*tempo[3]) - (tempo[1]*tempo[2]);
                 repDeterminant(det, lettre);
@@ -284,39 +284,46 @@ public class Controller {
                 new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
         );
         dialog.showAndWait();
-    }
 
 
     public void multiplier(){//Condition pour l'addition : si A (m x n) et B (n x p)
 
         int nombre = Integer.parseInt(resultat1)*Integer.parseInt(resultat4);
-        int[] resultat = new int[nombre];
+        int[][] resultat = new int[nombre][nombre];
 
         if (resultat2.equals(resultat3)){
 
-            for (int i = 0; i < resultat.length; i++){
+            int repC =0;
+            int produit = 0;
 
-                for (int j = 0; j < resultat.length; j++){
+            for (int i = 0; i < Integer.parseInt(resultat4); i++){
 
-                    for (int k = 1; k < resultat.length; k++){
+                for (int j = 0; j < Integer.parseInt(resultat1); j++){
 
+                    for (int k = 0; k < Integer.parseInt(resultat2); k++){
                         try{
-                            resultat[i] = Integer.parseInt(tab2DA[i][k].getText())*Integer.parseInt(tab2DB[k][j].getText())
-                                    + Integer.parseInt(tab2DA[i][k + 1].getText())*Integer.parseInt(tab2DB[k][j + 1].getText());
+
+                            produit = Integer.parseInt(tab2DA[j][k].getText())*Integer.parseInt(tab2DB[k][i].getText());
+                            repC = repC + produit;
+
                         }
                         catch (NumberFormatException e){
+                            System.out.println("yolo");
                         }
                         catch (NullPointerException e){
-
+                            System.out.println("yolo2");
                         }
-
                     }
+                    resultat[j][i] = repC;
+                    repC =0;
+                    //produit =0;
+
                 }
             }
 
-            System.out.println(tab2DA[0][1].getText());
+            System.out.println(tab2DA[0][0].getText());
 
-            reponse(resultat);
+            repMulti(resultat);
 
 
 
@@ -348,6 +355,35 @@ public class Controller {
         }
 
     }
+    public void repMulti(int[][] corolaire){            // à embellir plus tard
+
+        GridPane reponse = new GridPane();
+
+        for (int i = 0; i< Integer.parseInt(resultat4); i++){
+            for (int j =0; j < Integer.parseInt(resultat1); j++){
+                reponse.add(new Label(String.valueOf(corolaire[j][i])), i, j);
+
+            }
+        }
+
+        reponse.setAlignment(Pos.TOP_CENTER);
+        reponse.setVgap(10); reponse.setHgap(10);
+
+        for (Node r: reponse.getChildren()) {
+            r.setScaleX(1.2); r.setScaleY(1.2);
+        }
+
+        Dialog dialog = new Dialog();
+        dialog.setHeight(500); dialog.setWidth(800);
+        dialog.setHeaderText("Matrice Résultante : ");
+        dialog.getDialogPane().setContent(reponse);
+        dialog.getDialogPane().getButtonTypes().add(
+                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
+        );
+        dialog.showAndWait();
+
+    }
+
 
         //réponse d'une opération sur deux matrices
     public void reponse(int[] corolaire){            // à embellir plus tard
