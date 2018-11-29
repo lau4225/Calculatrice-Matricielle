@@ -214,7 +214,7 @@ public class Controller {
                 }
             }
 
-            System.out.println(tab2DA[1][1].getText());
+            System.out.println(tab2DA[0][1].getText());
 
             reponse(resultat);
 
