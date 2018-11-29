@@ -283,7 +283,7 @@ public class Controller {
         dialog.getDialogPane().getButtonTypes().add(
                 new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
         );
-        dialog.showAndWait();
+        dialog.showAndWait();}
 
 
     public void multiplier(){//Condition pour l'addition : si A (m x n) et B (n x p)
