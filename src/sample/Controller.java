@@ -12,16 +12,16 @@ public class Controller {
     @FXML
     GridPane matB;
 
-    private TextField[] tableau1 = new TextField[1000];
-    private TextField[] tableau2 = new TextField[1000];
+    private TextField[] tableau1 = new TextField[1000];  //tableau correspondant à la matrice A
+    private TextField[] tableau2 = new TextField[1000];  //tableau correspondant à la matrice B
 
-    private String resultat1 = "";
-    private String resultat2 = "";
-    private String resultat3 = "";
-    private String resultat4 = "";
+    private String resultat1 = "";  //nb lignes mat A
+    private String resultat2 = "";  //nb colonnes mat A
+    private String resultat3 = "";  //nblignes mat B
+    private String resultat4 = "";  //nb colonnes mat B
 
-    private TextField[][] tab2DA = new TextField[1000][1000];
-    private TextField[][] tab2DB = new TextField[1000][1000];
+    private TextField[][] tab2DA = new TextField[1000][1000];  //tableau 2D correspondant à la matrice A
+    private TextField[][] tab2DB = new TextField[1000][1000];  //tableau 2D correspondant à la matrice B
 
 
     /*
@@ -205,56 +205,85 @@ public class Controller {
     Button scalaireB;
     @FXML
     TextField produitNbB;
-    public void multiScalaire() {
-        int[] corolaireA = new int[Integer.parseInt(resultat1) * Integer.parseInt(resultat2)];
-        boolean videA = false;
 
-        if (!produitNbA.getText().isEmpty()) { //Si la case n'est pas vide
+    public void multiScalaire(TextField[] tableau, int lignes, int colonnes, TextField facteur) {
+        int[] corolaire = new int[lignes * colonnes];
+        boolean vide = false;
 
-            for (int i = 0; i < corolaireA.length; i++) { //regarder s'il y a des cases vides
-                if(tableau1[i].getText().isEmpty()){ //Si oui, vide est vrai
-                    videA = true;
+        if (!facteur.getText().isEmpty()) { //Si la case n'est pas vide
+
+            for (int i = 0; i < corolaire.length; i++) { //regarder s'il y a des cases vides
+                if(tableau[i].getText().isEmpty()){ //Si oui, vide est vrai
+                    vide = true;
                 }}
 
-            if (videA){ emptySolo(); }
+            if (vide){ emptySolo(); }
             else {
-                for (int i = 0; i < corolaireA.length; i++) {
+                for (int i = 0; i < corolaire.length; i++) {
                     try {
-                            corolaireA[i] = Integer.parseInt(tableau1[i].getText()) * Integer.parseInt(produitNbA.getText());
+                        corolaire[i] = Integer.parseInt(tableau[i].getText()) * Integer.parseInt(facteur.getText());
                     } catch (Exception e) {
                         emptySolo();
                     }
 
                 }
-                solo(corolaireA, Integer.parseInt(resultat2));
-                produitNbA.setText("");
+                solo(corolaire, colonnes);
+                facteur.setText("");
             }
         }
+    }
 
+    public void multiScalaireA() { multiScalaire(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), produitNbA); }
+    public void multiScalaireB() { multiScalaire(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), produitNbB); }
 
-        int[] corolaireB = new int[Integer.parseInt(resultat3) * Integer.parseInt(resultat4)];
-        boolean videB = false;
-        if (!produitNbB.getText().isEmpty()) { //Si la case n'est pas vide
+    public void determinant(TextField[] tableau, int lignes, int colonnes, String lettre){//Laurie rendu ici
 
-            for (int i = 0; i < corolaireB.length; i++) { //regarder s'il y a des cases vides
-                if(tableau2[i].getText().isEmpty()){ //Si oui, vide est vrai
-                    videB = true;
-                }}
+        //regarder si la matrice est carré
+        if (lignes == colonnes){
+            //transformer toutes les textfield
 
-            if (videB){ emptySolo(); }
-            else {
-                for (int i = 0; i < corolaireB.length; i++) {
-                    try {
-                        corolaireB[i] = Integer.parseInt(tableau2[i].getText()) * Integer.parseInt(produitNbB.getText());
-                    } catch (Exception e) {
-                        emptySolo();
-                    }
+            int[] tempo = new int[lignes*colonnes];
+            int det = 0;
 
-                }
-                solo(corolaireB, Integer.parseInt(resultat4));
-                produitNbB.setText("");
+            for (int i=0; i< tempo.length; i++){
+                tempo[i] = Integer.parseInt(tableau[i].getText());
             }
+            switch (lignes){
+                case 1 : repDeterminant(tempo[0], lettre); break;
+
+                case 2 :
+                    det = (tempo[0]*tempo[3]) - (tempo[1]*tempo[2]);
+                repDeterminant(det, lettre);
+                break;
+
+                case 3 :
+                    det = ((tempo[0]*tempo[4]*tempo[8]) + (tempo[1]*tempo[5]*tempo[6]) + (tempo[2]*tempo[3]*tempo[7])) -
+                            ((tempo[6]*tempo[4]*tempo[2]) + (tempo[7]*tempo[5]*tempo[0]) + (tempo[8]*tempo[3]*tempo[1]));
+                    repDeterminant(det, lettre);
+                    break;
+
+                default : det = 10; repDeterminant(det, lettre);        //À FAIRE POUR DES MATRICES D'ORDRE SUPÉRIEUR A 3
+            }
+        }else{
+                                        //dialog que la matrice doit être carré
         }
+    }
+
+    public void determinantA(){determinant(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A");}
+    public void determinantB(){determinant(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), "B");}
+
+
+    public void repDeterminant(int determinant, String lettre){
+        Label reponse = new Label(Integer.toString(determinant));
+
+        Dialog dialog = new Dialog();
+        dialog.setHeight(500); dialog.setWidth(800);
+        dialog.setHeaderText("Le déterminat de la matrice " + lettre + " est : ");
+        dialog.getDialogPane().setContent(reponse);
+        dialog.getDialogPane().getButtonTypes().add(
+                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
+        );
+        dialog.showAndWait();
     }
 
 
@@ -266,7 +295,9 @@ public class Controller {
         if (resultat2.equals(resultat3)){
 
             for (int i = 0; i < resultat.length; i++){
+
                 for (int j = 0; j < resultat.length; j++){
+
                     for (int k = 1; k < resultat.length; k++){
 
                         try{
@@ -318,7 +349,7 @@ public class Controller {
 
     }
 
-
+        //réponse d'une opération sur deux matrices
     public void reponse(int[] corolaire){            // à embellir plus tard
 
         GridPane reponse = new GridPane();
@@ -346,7 +377,8 @@ public class Controller {
 
     }
 
-    public void solo(int[] corolaire, int colonnes){            // à embellir plus tard aussi
+        //reponse d'une opération sur une seule matrice
+    public void solo(int[] corolaire, int colonnes){     // donne la reponse à embellir plus tard aussi
 
         GridPane reponse = new GridPane();
 

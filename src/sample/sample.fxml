@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <center>
@@ -15,13 +16,21 @@
             <children>
                 <VBox alignment="CENTER" prefHeight="500.0" prefWidth="225.0">
                     <children>
-                        <Label text="Matrice A" />
+                        <Label text="Matrice A">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></Label>
                         <GridPane id="matA" fx:id="matA" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="225.0">
                         </GridPane>
-                        <Button mnemonicParsing="false" text="Transposée A" />
+                  <HBox alignment="TOP_CENTER">
+                     <children>
+                              <Button mnemonicParsing="false" text="Transposée A" />
+                        <Button mnemonicParsing="false" onAction="#determinantA" text="Déterminant A" />
+                     </children>
+                  </HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="scalaireA" mnemonicParsing="false" onAction="#multiScalaire" text="Produit par un scalaire" />
+                        <Button fx:id="scalaireA" mnemonicParsing="false" onAction="#multiScalaireA" text="Produit par un scalaire" />
                               <TextField fx:id="produitNbA" alignment="CENTER" maxWidth="88.0" prefHeight="25.0" prefWidth="88.0" promptText="Multiplier par " />
                      </children>
                   </HBox>
@@ -29,7 +38,10 @@
                 </VBox>
                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="7.0">
                     <children>
-                        <Button fx:id="demarrer" onAction="#dialog" text="Démarrer" />
+                        <Button fx:id="demarrer" onAction="#dialog" text="Démarrer" textAlignment="CENTER" textFill="#2bc617">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font></Button>
                         <Button fx:id="somme" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addition" prefHeight="25.0" prefWidth="116.0" text="A + B" />
                         <Button fx:id="difference" alignment="CENTER" mnemonicParsing="false" onAction="#soustraction" prefHeight="25.0" prefWidth="110.0" text="A - B" />
                         <Button fx:id="produit" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#multiplier" prefHeight="25.0" prefWidth="113.0" text="A * B" />
@@ -40,13 +52,23 @@
                     </HBox.margin></VBox>
                 <VBox alignment="CENTER" prefHeight="500.0" prefWidth="225.0">
                     <children>
-                        <Label text="Matrice B" />
+                        <Label text="Matrice B">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></Label>
                         <GridPane id="matB" fx:id="matB" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="225.0">
-                        </GridPane>
-                        <Button mnemonicParsing="false" text="Transposée B" />
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets></GridPane>
+                  <HBox alignment="TOP_CENTER">
+                     <children>
+                              <Button mnemonicParsing="false" text="Transposée B" />
+                        <Button mnemonicParsing="false" onAction="#determinantB" text="Déterminant B" />
+                     </children>
+                  </HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="scalaireB" mnemonicParsing="false" onAction="#multiScalaire" text="Produit par un scalaire" />
+                        <Button fx:id="scalaireB" mnemonicParsing="false" onAction="#multiScalaireB" text="Produit par un scalaire" />
                               <TextField fx:id="produitNbB" alignment="CENTER" maxWidth="88.0" promptText="Multiplier par" />
                      </children>
                   </HBox>
