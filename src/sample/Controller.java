@@ -90,6 +90,7 @@ public class Controller {
 
     }
 
+
     public void creation(int nbTextField, int nbLignes, int nbColonnes, TextField[] tableau, GridPane matrice, TextField[][] tableau2D){
 
         for (int i = 0; i< nbTextField; i++){
