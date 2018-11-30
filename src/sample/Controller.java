@@ -34,47 +34,10 @@ public class Controller {
         matA.getChildren().clear();
         matB.getChildren().clear();
 
-        TextInputDialog ligneA = new TextInputDialog();
-        ligneA.setTitle("Matrice A");
-        ligneA.setHeaderText("Création");
-        ligneA.setContentText("Entrez le nombre de lignes");
-        resultat1 = ligneA.showAndWait().get();
-        if (resultat1.equals("")){
-            ligneA.setHeaderText("Vous n'avez pas entré un nombre!");
-            resultat1 = ligneA.showAndWait().get();
-        }
-
-        TextInputDialog colonneA = new TextInputDialog();
-        colonneA.setTitle("Matrice A");
-        colonneA.setHeaderText("Création");
-        colonneA.setContentText("Entrez le nombre de colonnes");
-        resultat2 = colonneA.showAndWait().get();
-        if (resultat2.equals("")){
-            colonneA.setHeaderText("Vous n'avez pas entré un nombre!");
-            resultat2 = colonneA.showAndWait().get();
-        }
-
-
-        TextInputDialog ligneB = new TextInputDialog();
-        ligneB.setTitle("Matrice B");
-        ligneB.setHeaderText("Création");
-        ligneB.setContentText("Entrez le nombre de lignes");
-        resultat3 = ligneB.showAndWait().get();
-        if (resultat3.equals("")){
-            ligneB.setHeaderText("Vous n'avez pas entré un nombre!");
-            resultat3 = ligneB.showAndWait().get();
-        }
-
-
-        TextInputDialog colonneB = new TextInputDialog();
-        colonneB.setTitle("Matrice B");
-        colonneB.setHeaderText("Création");
-        colonneB.setContentText("Entrez le nombre de colonnes");
-        resultat4 = colonneB.showAndWait().get();
-        if (resultat4.equals("")){
-            colonneB.setHeaderText("Vous n'avez pas entré un nombre!");
-            resultat4 = colonneB.showAndWait().get();
-        }
+        resultat1 = size("A", "lignes");
+        resultat2 = size("A", "colonnes");
+        resultat3 = size("B", "lignes");
+        resultat4 = size("B", "colonnes");
 
 
         int nbTextA = Integer.parseInt(resultat1)*Integer.parseInt(resultat2);
@@ -90,6 +53,20 @@ public class Controller {
 
     }
 
+    public String size (String lettre, String choix){
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Matrice " + lettre);
+        dialog.setHeaderText("Création");
+        dialog.setContentText("Entrez le nombre de " + choix);
+        String resultat = dialog.showAndWait().get();
+        if (resultat.equals("")){
+            dialog.setHeaderText("Vous devez entrer un nombre!");
+            resultat = dialog.showAndWait().get();
+        }
+
+        return resultat;
+    }
+
     public void creation(int nbTextField, int nbLignes, int nbColonnes, TextField[] tableau, GridPane matrice, TextField[][] tableau2D){
 
         for (int i = 0; i< nbTextField; i++){
@@ -100,10 +77,14 @@ public class Controller {
                 matrice.add(tableau[i], col, row);
         }
 
+        //Creation des tableaux 2D
+        int k = 0;
         for (int i = 0; i < nbLignes; i++){
+
             for (int j = 0; j < nbColonnes; j++){
 
-                tableau2D[i][j] = tableau[i];
+                tableau2D[i][j] = tableau[k];
+                k++;
             }
         }
 
@@ -114,19 +95,14 @@ public class Controller {
     Button somme;
     public void addition(){
 
-        boolean vide = false;
-
         if (resultat1.equals(resultat3) && resultat2.equals(resultat4)) {
-            int nombre = Integer.parseInt(resultat1)*Integer.parseInt(resultat2);
-            int[] resultat = new int[nombre];
 
-            for (int i = 0; i < nombre; i++) { //regarder s'il y a des cases vides
-                if(tableau1[i].getText().isEmpty()|| tableau2[i].getText().isEmpty()){ //Si oui, vide est vrai
-                     vide = true;
-            }}
-
-            if (vide==true){ emptyDouble(); }
+            // on a juste 2 matrices alors pas besoin de passer en parametres
+            if (casesVides()){ emptyDouble(); }
             else {
+                int nombre = Integer.parseInt(resultat1) * Integer.parseInt(resultat2);
+                int[] resultat = new int[nombre];
+
                 for (int i = 0; i < nombre; i++) {
                     try {
                         resultat[i] = Integer.parseInt(tableau1[i].getText()) + Integer.parseInt(tableau2[i].getText());
@@ -144,18 +120,12 @@ public class Controller {
     Button difference;
     public void soustraction(){
 
-        boolean vide = false;
         if (resultat1.equals(resultat3) && resultat2.equals(resultat4)) {
-            int nombre = Integer.parseInt(resultat1)*Integer.parseInt(resultat2);
-            int[] resultat = new int[nombre];
 
-            for (int i = 0; i < nombre; i++) { //regarder s'il y a des cases vides
-                if(tableau1[i].getText().isEmpty()|| tableau2[i].getText().isEmpty()){ //Si oui, vide est vrai
-                    vide = true;
-                }}
-
-            if (vide==true){ emptyDouble(); }
+            if (casesVides()){ emptyDouble(); }
             else {
+                int nombre = Integer.parseInt(resultat1) * Integer.parseInt(resultat2);
+                int[] resultat = new int[nombre];
                 for (int i = 0; i < nombre; i++) {
                     try {
                         resultat[i] = Integer.parseInt(tableau1[i].getText()) - Integer.parseInt(tableau2[i].getText());
@@ -172,18 +142,12 @@ public class Controller {
     @FXML
     Button hadam;
     public void hadamard(){
-        boolean vide = false;
         if (resultat1.equals(resultat3) && resultat2.equals(resultat4)) {
-            int nombre = Integer.parseInt(resultat1)*Integer.parseInt(resultat2);
-            int[] resultat = new int[nombre];
 
-            for (int i = 0; i < nombre; i++) { //regarder s'il y a des cases vides
-                if(tableau1[i].getText().isEmpty()|| tableau2[i].getText().isEmpty()){ //Si oui, vide est vrai
-                    vide = true;
-                }}
-
-            if (vide==true){ emptyDouble(); }
+            if (casesVides()){ emptyDouble(); }
             else {
+                int nombre = Integer.parseInt(resultat1) * Integer.parseInt(resultat2);
+                int[] resultat = new int[nombre];
                 for (int i = 0; i < nombre; i++) {
                     try {
                         resultat[i] = Integer.parseInt(tableau1[i].getText()) * Integer.parseInt(tableau2[i].getText());
@@ -206,12 +170,12 @@ public class Controller {
     @FXML
     TextField produitNbB;
 
+
     public void multiScalaire(TextField[] tableau, int lignes, int colonnes, TextField facteur) {
         int[] corolaire = new int[lignes * colonnes];
         boolean vide = false;
 
-        if (!facteur.getText().isEmpty()) { //Si la case n'est pas vide
-
+        if (!facteur.getText().isEmpty()) { //Si la case n'est pas vide pour 1 seule matrice
             for (int i = 0; i < corolaire.length; i++) { //regarder s'il y a des cases vides
                 if(tableau[i].getText().isEmpty()){ //Si oui, vide est vrai
                     vide = true;
@@ -236,12 +200,48 @@ public class Controller {
     public void multiScalaireA() { multiScalaire(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), produitNbA); }
     public void multiScalaireB() { multiScalaire(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), produitNbB); }
 
+    @FXML
+    Button transpoA;
+    @FXML
+    Button transpoB;
+    public void transposer(TextField[][] tableau, int lignes, int colonnes){                 //laurie rendue ici mais ca marche pas
+
+
+        if (lignes == colonnes) {
+            int[][] resultat = new int[lignes][colonnes];
+
+            for (int i = 0; i < lignes; i++) {
+
+                for (int j = 0; j < colonnes; j++) {
+                    resultat[i][j] = Integer.parseInt(tableau[j][i].getText());
+
+                }
+
+            }
+
+            repMulti(resultat);
+
+        }else {
+                                                                                // dialog
+        }
+    }
+
+    public void transposerA(){ transposer(tab2DA, Integer.parseInt(resultat1), Integer.parseInt(resultat2));}
+    public void transposerB(){ transposer(tab2DB, Integer.parseInt(resultat3), Integer.parseInt(resultat4));}
+
+
+
+    @FXML
+    Button detA;
+    @FXML
+    Button detB;
+
     public void determinant(TextField[] tableau, int lignes, int colonnes, String lettre){//Laurie rendu ici
+
 
         //regarder si la matrice est carré
         if (lignes == colonnes){
             //transformer toutes les textfield
-
             int[] tempo = new int[lignes*colonnes];
             int det = 0;
 
@@ -250,7 +250,6 @@ public class Controller {
             }
             switch (lignes){
                 case 1 : repDeterminant(tempo[0], lettre); break;
-
                 case 2 :
                     det = (tempo[0]*tempo[3]) - (tempo[1]*tempo[2]);
                 repDeterminant(det, lettre);
@@ -262,10 +261,10 @@ public class Controller {
                     repDeterminant(det, lettre);
                     break;
 
-                default : det = 10; repDeterminant(det, lettre);        //À FAIRE POUR DES MATRICES D'ORDRE SUPÉRIEUR A 3
+                default : det = 10; repDeterminant(det, lettre);                    //À FAIRE POUR DES MATRICES D'ORDRE SUPÉRIEUR A 3
             }
         }else{
-                                        //dialog que la matrice doit être carré
+                                                                                            //dialog que la matrice doit être carré
         }
     }
 
@@ -288,49 +287,41 @@ public class Controller {
 
 
     public void multiplier(){//Condition pour l'addition : si A (m x n) et B (n x p)
+        if (resultat2.equals(resultat3)){
+            int[][] resultat = new int[Integer.parseInt(resultat1)][Integer.parseInt(resultat4)];
 
-        int nombre = Integer.parseInt(resultat1)*Integer.parseInt(resultat4);
-        int[][] resultat = new int[nombre][nombre];
             int repC =0;
             int produit = 0;
-        if (resultat2.equals(resultat3)){
-          
-            for (int i = 0; i < resultat.length; i++){
 
-                for (int j = 0; j < resultat.length; j++){
 
-                    for (int k = 1; k < resultat.length; k++){
+            for (int i = 0; i < Integer.parseInt(resultat1); i++) { //nb de lignes
 
-                        try{
+                for (int j = 0; j < Integer.parseInt(resultat4); j++) {  // nb colonnes
 
-                            produit = Integer.parseInt(tab2DA[j][k].getText())*Integer.parseInt(tab2DB[k][i].getText());
+                    for (int k = 0; k < Integer.parseInt(resultat2); k++) {  //represente k dans la definition
+                        try {
+
+
+                            produit = Integer.parseInt(tab2DA[i][k].getText())*Integer.parseInt(tab2DB[k][j].getText());
                             repC = repC + produit;
 
-                        }
-                        catch (NumberFormatException e){
+                        } catch (Exception e) {
                             System.out.println("yolo");
                         }
-                        catch (NullPointerException e){
-                            System.out.println("yolo2");
-                        }
                     }
-                    resultat[j][i] = repC;
+
+                    resultat[i][j] = repC;
                     repC =0;
-                    //produit =0;
 
                 }
+
             }
 
-            System.out.println(tab2DA[0][0].getText());
-
             repMulti(resultat);
-
-
-
         }else { wrongDimensions(); }
     }
 
-    public void produitVectoriel(){                                                        // rendu ici exceptions
+    public void produitVectoriel(){                                                             // rendu ici exceptions
 
         int[] resultat = new int[3];
 
@@ -351,8 +342,36 @@ public class Controller {
             reponse(resultat);
         }
         else {
-                                            // idem
+                                                                            // idem
         }
+    }
+
+    public void repMulti(int[][] corolaire){                                // à embellir plus tard
+
+        GridPane reponse = new GridPane();
+
+        for (int i = 0; i< Integer.parseInt(resultat4); i++){
+            for (int j =0; j < Integer.parseInt(resultat1); j++){
+                reponse.add(new Label(String.valueOf(corolaire[j][i])), i, j);
+
+            }
+        }
+
+        reponse.setAlignment(Pos.TOP_CENTER);
+        reponse.setVgap(10); reponse.setHgap(10);
+
+        for (Node r: reponse.getChildren()) {
+            r.setScaleX(1.2); r.setScaleY(1.2);
+        }
+
+        Dialog dialog = new Dialog();
+        dialog.setHeight(500); dialog.setWidth(800);
+        dialog.setHeaderText("Matrice Résultante : ");
+        dialog.getDialogPane().setContent(reponse);
+        dialog.getDialogPane().getButtonTypes().add(
+                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
+        );
+        dialog.showAndWait();
 
     }
     public void repMulti(int[][] corolaire){            // à embellir plus tard
@@ -385,8 +404,9 @@ public class Controller {
     }
 
 
+
         //réponse d'une opération sur deux matrices
-    public void reponse(int[] corolaire){            // à embellir plus tard
+    public void reponse(int[] corolaire){                                                       // à embellir plus tard
 
         GridPane reponse = new GridPane();
 
@@ -471,6 +491,20 @@ public class Controller {
         alerte.setContentText(
                 "Remplissez la matrice avec des nombres entiers seulement! ");
         alerte.showAndWait();
+    }
+
+    public boolean casesVides() {
+
+        boolean vide = false;
+
+        int nombre = Integer.parseInt(resultat1) * Integer.parseInt(resultat2);
+        for (int i = 0; i < nombre; i++) { //regarder s'il y a des cases vides
+            if (tableau1[i].getText().isEmpty() || tableau2[i].getText().isEmpty()) { //Si oui, vide est vrai
+                vide = true;
+            }
+
+        }
+        return vide;
     }
 
 
