@@ -24,8 +24,8 @@
                         </GridPane>
                   <HBox alignment="TOP_CENTER">
                      <children>
-                              <Button mnemonicParsing="false" text="Transposée A" />
-                        <Button mnemonicParsing="false" onAction="#determinantA" text="Déterminant A" />
+                              <Button fx:id="transpoA" mnemonicParsing="false" text="Transposée A" onAction="#transposerA" />
+                        <Button fx:id="detA" mnemonicParsing="false" onAction="#determinantA" text="Déterminant A" />
                      </children>
                   </HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -38,7 +38,7 @@
                 </VBox>
                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="7.0">
                     <children>
-                        <Button fx:id="demarrer" onAction="#dialog" text="Démarrer" textAlignment="CENTER" textFill="#2bc617">
+                        <Button fx:id="dialog" onAction="#dialog" text="Démarrer" textAlignment="CENTER" textFill="#2bc617">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font></Button>
@@ -62,8 +62,8 @@
                      </opaqueInsets></GridPane>
                   <HBox alignment="TOP_CENTER">
                      <children>
-                              <Button mnemonicParsing="false" text="Transposée B" />
-                        <Button mnemonicParsing="false" onAction="#determinantB" text="Déterminant B" />
+                              <Button fx:id="transpoB" mnemonicParsing="false" text="Transposée B" onAction="#transposerB" />
+                        <Button fx:id="detB" mnemonicParsing="false" onAction="#determinantB" text="Déterminant B" />
                      </children>
                   </HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
