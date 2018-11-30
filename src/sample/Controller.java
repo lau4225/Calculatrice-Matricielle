@@ -345,35 +345,6 @@ public class Controller {
                                                                             // idem
         }
     }
-
-    public void repMulti(int[][] corolaire){                                // à embellir plus tard
-
-        GridPane reponse = new GridPane();
-
-        for (int i = 0; i< Integer.parseInt(resultat4); i++){
-            for (int j =0; j < Integer.parseInt(resultat1); j++){
-                reponse.add(new Label(String.valueOf(corolaire[j][i])), i, j);
-
-            }
-        }
-
-        reponse.setAlignment(Pos.TOP_CENTER);
-        reponse.setVgap(10); reponse.setHgap(10);
-
-        for (Node r: reponse.getChildren()) {
-            r.setScaleX(1.2); r.setScaleY(1.2);
-        }
-
-        Dialog dialog = new Dialog();
-        dialog.setHeight(500); dialog.setWidth(800);
-        dialog.setHeaderText("Matrice Résultante : ");
-        dialog.getDialogPane().setContent(reponse);
-        dialog.getDialogPane().getButtonTypes().add(
-                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
-        );
-        dialog.showAndWait();
-
-    }
     public void repMulti(int[][] corolaire){            // à embellir plus tard
 
         GridPane reponse = new GridPane();
