@@ -287,12 +287,12 @@ public class Controller {
 
 
     public void multiplier(){//Condition pour l'addition : si A (m x n) et B (n x p)
-
         if (resultat2.equals(resultat3)){
             int[][] resultat = new int[Integer.parseInt(resultat1)][Integer.parseInt(resultat4)];
 
             int repC =0;
             int produit = 0;
+
 
             for (int i = 0; i < Integer.parseInt(resultat1); i++) { //nb de lignes
 
@@ -308,7 +308,6 @@ public class Controller {
                         } catch (Exception e) {
                             System.out.println("yolo");
                         }
-
                     }
 
                     resultat[i][j] = repC;
@@ -375,6 +374,35 @@ public class Controller {
         dialog.showAndWait();
 
     }
+    public void repMulti(int[][] corolaire){            // à embellir plus tard
+
+        GridPane reponse = new GridPane();
+
+        for (int i = 0; i< Integer.parseInt(resultat4); i++){
+            for (int j =0; j < Integer.parseInt(resultat1); j++){
+                reponse.add(new Label(String.valueOf(corolaire[j][i])), i, j);
+
+            }
+        }
+
+        reponse.setAlignment(Pos.TOP_CENTER);
+        reponse.setVgap(10); reponse.setHgap(10);
+
+        for (Node r: reponse.getChildren()) {
+            r.setScaleX(1.2); r.setScaleY(1.2);
+        }
+
+        Dialog dialog = new Dialog();
+        dialog.setHeight(500); dialog.setWidth(800);
+        dialog.setHeaderText("Matrice Résultante : ");
+        dialog.getDialogPane().setContent(reponse);
+        dialog.getDialogPane().getButtonTypes().add(
+                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
+        );
+        dialog.showAndWait();
+
+    }
+
 
 
         //réponse d'une opération sur deux matrices
