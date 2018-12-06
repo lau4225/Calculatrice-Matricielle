@@ -351,13 +351,7 @@ public class Controller {
                 }
             }
 
-            if (exposant > 1){                              //ne fonctionne pas
-
-                for (int i = 0; i < lignes; i++){
-                    for (int j = 0; j < colonnes; j++){
-                        resultat[i][j] = Integer.parseInt(tableau[i][j].getText());
-                    }
-                }
+            if (exposant > 1){
 
                  int nbrMulti = 1;
 
@@ -367,21 +361,25 @@ public class Controller {
 
                          for (int j = 0; j < colonnes; j++) {  // nb colonnes
 
-                                 try {
+                             for (int k = 0; k < lignes; k++){
 
-                                     produit = resultat[i][j]*Integer.parseInt(tableau[i][j].getText());
+                                 try {
+                                     produit = Integer.parseInt(tableau[i][k].getText())*Integer.parseInt(tableau[k][j].getText());
                                      repC = repC + produit;
 
                                  } catch (Exception e) {
                                      System.out.println("yolo");
                                  }
 
-                             resultat[i][j] = repC;
+
+                             }
+                             resultat[i][j] = resultat[i][j] + repC;
                              repC =0;
 
                          }
 
                      }
+                     nbrMulti++;
                  }
             }
 
