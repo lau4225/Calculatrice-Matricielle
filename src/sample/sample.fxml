@@ -24,7 +24,7 @@
                         </GridPane>
                   <HBox alignment="TOP_CENTER">
                      <children>
-                              <Button fx:id="transpoA" mnemonicParsing="false" text="Transposée A" onAction="#transposerA" />
+                              <Button fx:id="transpoA" mnemonicParsing="false" onAction="#transposerA" text="Transposée A" />
                         <Button fx:id="detA" mnemonicParsing="false" onAction="#determinantA" text="Déterminant A" />
                      </children>
                   </HBox>
@@ -46,6 +46,7 @@
                         <Button fx:id="difference" alignment="CENTER" mnemonicParsing="false" onAction="#soustraction" prefHeight="25.0" prefWidth="110.0" text="A - B" />
                         <Button fx:id="produit" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#multiplier" prefHeight="25.0" prefWidth="113.0" text="A * B" />
                         <Button fx:id="hadam" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#hadamard" prefHeight="25.0" prefWidth="120.0" text="Hadamard" />
+                        <Button fx:id="tensoriel" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#tensoriel" prefHeight="25.0" prefWidth="116.0" text="A ⊗ B" />
                     </children>
                     <HBox.margin>
                         <Insets left="20.0" right="20.0" />
@@ -62,7 +63,7 @@
                      </opaqueInsets></GridPane>
                   <HBox alignment="TOP_CENTER">
                      <children>
-                              <Button fx:id="transpoB" mnemonicParsing="false" text="Transposée B" onAction="#transposerB" />
+                              <Button fx:id="transpoB" mnemonicParsing="false" onAction="#transposerB" text="Transposée B" />
                         <Button fx:id="detB" mnemonicParsing="false" onAction="#determinantB" text="Déterminant B" />
                      </children>
                   </HBox>
