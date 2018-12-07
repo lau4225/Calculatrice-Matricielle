@@ -6,6 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
+
 public class Controller {
     @FXML
     GridPane matA;
@@ -25,8 +27,8 @@ public class Controller {
 
 
     /*
-    4/3 = ligne
-    4%3 = colone
+    4/3 = lignes
+    4%3 = colonnes
      */
 
 
@@ -204,26 +206,19 @@ public class Controller {
     Button transpoA;
     @FXML
     Button transpoB;
-    public void transposer(TextField[][] tableau, int lignes, int colonnes){                 //laurie rendue ici mais ca marche pas
+    public void transposer(TextField[][] tableau, int lignes, int colonnes){
 
+            int[][] resultat = new int[colonnes][lignes];
 
-        if (lignes == colonnes) {
-            int[][] resultat = new int[lignes][colonnes];
+            for (int i = 0; i < colonnes; i++) {
 
-            for (int i = 0; i < lignes; i++) {
-
-                for (int j = 0; j < colonnes; j++) {
+                for (int j = 0; j < lignes; j++) {
                     resultat[i][j] = Integer.parseInt(tableau[j][i].getText());
-
                 }
 
             }
 
-            repMulti(resultat);
-
-        }else {
-                                                                                // dialog
-        }
+            repTranspo(resultat, colonnes, lignes);
     }
 
     public void transposerA(){ transposer(tab2DA, Integer.parseInt(resultat1), Integer.parseInt(resultat2));}
@@ -414,6 +409,94 @@ public class Controller {
                                                                             // idem
         }
     }
+
+    @FXML
+    Button tensoriel;
+    public void tensoriel() {  // matA mxn  & matB  pxq
+
+        // resultat dimensions mp x nq
+        int m = Integer.parseInt(resultat1);                        // presque parfait, marche pas si 2X3 et 3X2
+        int n = Integer.parseInt(resultat2);
+        int p = Integer.parseInt(resultat3);
+        int q = Integer.parseInt(resultat4);
+
+        int[] etape1 = new int[p*q];
+
+        int[][][] etape3 = new int[m*n][p][q];
+        int[][][][] resultat = new int[m][n][p][q];
+
+
+        for (int j = 0; j < m*n ; j++) { //nb de valeur tabA
+            int[][] etape2 = new int[p][q];
+
+            //multiplication par un scalaire dans un tableau 1D
+            for (int i = 0; i < etape1.length; i++) {
+                try {
+                    etape1[i] = Integer.parseInt(tableau1[j].getText()) * Integer.parseInt(tableau2[i].getText()); //premiere valeur tabA avec toutes les valeurs tabB
+                } catch (Exception e) {
+                    emptySolo();
+                }
+
+            }
+
+            //on prend ce tableau et on le transforme en 2D
+            for (int k = 0; k < etape1.length; k++){
+                etape2[k/q][k%q] = etape1[k];
+            }
+
+
+            //On prend ce tableau 2D et on le met dans un tableau de tableau 2D
+            etape3[j] = etape2;
+        }
+
+
+        // on retransforme ce tableau 1D en tableau 2D
+        for (int r = 0; r < etape3.length; r++){
+            //ajouter les valeurs au gridpane
+            resultat [r/n][r%n] = etape3[r];
+        }
+
+        GridPane reponse = new GridPane();
+
+
+        for (int i = 0; i< m ; i++){ //colonnes
+            for (int j =0; j < n ; j++){ //lignes
+                for (int k=0; k < p ; k++){ //colonnes total
+                    for (int c = 0; c < q ; c++){ //lignes total
+                        //position  matA  lignes, colonnes   mat B lignes colonnes    coordonnées colonnes, lignes
+                        reponse.add(new Label(String.valueOf(resultat[i][j][k][c])), c + (j*n), k + (i*m));
+
+
+                    }
+                }
+               //
+            }
+
+        }
+
+
+
+        reponse.setAlignment(Pos.TOP_CENTER);
+        reponse.setVgap(10); reponse.setHgap(10);
+
+        for (Node r: reponse.getChildren()) {
+            r.setScaleX(1.2); r.setScaleY(1.2);
+        }
+
+
+        Dialog dialog = new Dialog();
+        dialog.setHeight(500); dialog.setWidth(1000);
+        dialog.setHeaderText("Matrice Résultante : ");
+        dialog.getDialogPane().setContent(reponse);
+        dialog.getDialogPane().getButtonTypes().add(
+                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
+        );
+
+        dialog.showAndWait();
+
+    }
+
+
     public void repMulti(int[][] corolaire){            // à embellir plus tard
 
         GridPane reponse = new GridPane();
@@ -501,6 +584,34 @@ public class Controller {
 
         dialog.showAndWait();
 
+    }
+
+    public void repTranspo(int[][] corolaire, int lignes, int colonnes){
+
+        GridPane reponse = new GridPane();
+
+        for (int i = 0; i< lignes; i++){
+            for (int j =0; j < colonnes; j++){
+                reponse.add(new Label(String.valueOf(corolaire[i][j])), j, i);
+
+            }
+        }
+
+        reponse.setAlignment(Pos.TOP_CENTER);
+        reponse.setVgap(10); reponse.setHgap(10);
+
+        for (Node r: reponse.getChildren()) {
+            r.setScaleX(1.2); r.setScaleY(1.2);
+        }
+
+        Dialog dialog = new Dialog();
+        dialog.setHeight(500); dialog.setWidth(800);
+        dialog.setHeaderText("Matrice Résultante : ");
+        dialog.getDialogPane().setContent(reponse);
+        dialog.getDialogPane().getButtonTypes().add(
+                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
+        );
+        dialog.showAndWait();
     }
 
     public void wrongDimensions(){ //message d'erreur qui va afficher
