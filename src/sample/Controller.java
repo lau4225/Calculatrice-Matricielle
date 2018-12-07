@@ -316,6 +316,75 @@ public class Controller {
         }else { wrongDimensions(); }
     }
 
+    @FXML
+    TextField expoB;
+    @FXML
+    TextField expoA;
+
+    public void puissance(TextField power, int lignes, int colonnes, TextField[][] tableau){ //doit être carrée
+
+        int produit = 0;
+        int repC = 0;
+        int[][] resultat = new int[lignes][colonnes];
+        int exposant  = Integer.parseInt(power.getText());
+
+        if (lignes == colonnes){
+
+            if (exposant == 0){
+                for (int i = 0; i < lignes; i++){
+                    for (int j = 0; j < colonnes; j++){
+                        resultat[i][j] = 1;
+                    }
+                }
+            }
+
+            if (exposant == 1){
+                for (int i = 0; i < lignes; i++){
+                    for (int j = 0; j < colonnes; j++){
+                        resultat[i][j] = Integer.parseInt(tableau[i][j].getText());
+                    }
+                }
+            }
+
+            if (exposant > 1){
+
+                 int nbrMulti = 1;
+
+                 while (nbrMulti < exposant){
+
+                     for (int i = 0; i < lignes; i++) { //nb de lignes
+
+                         for (int j = 0; j < colonnes; j++) {  // nb colonnes
+
+                             for (int k = 0; k < lignes; k++){
+
+                                 try {
+                                     produit = Integer.parseInt(tableau[i][k].getText())*Integer.parseInt(tableau[k][j].getText());
+                                     repC = repC + produit;
+
+                                 } catch (Exception e) {
+                                     System.out.println("yolo");
+                                 }
+
+
+                             }
+                             resultat[i][j] = resultat[i][j] + repC;
+                             repC =0;
+
+                         }
+
+                     }
+                     nbrMulti++;
+                 }
+            }
+
+        }
+        repMulti(resultat);
+
+    }
+    public void puissanceA(){puissance(expoA, Integer.parseInt(resultat1), Integer.parseInt(resultat2), tab2DA);}
+    public void puissanceB(){puissance(expoB, Integer.parseInt(resultat3), Integer.parseInt(resultat4), tab2DB);}
+
     public void produitVectoriel(){                                                             // rendu ici exceptions
 
         int[] resultat = new int[3];
