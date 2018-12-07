@@ -12,16 +12,16 @@ public class Controller {
     @FXML
     GridPane matB;
 
-    private TextField[] tableau1 = new TextField[1000];
-    private TextField[] tableau2 = new TextField[1000];
+    private TextField[] tableau1 = new TextField[1000];  //tableau correspondant à la matrice A
+    private TextField[] tableau2 = new TextField[1000];  //tableau correspondant à la matrice B
 
-    private String resultat1 = "";
-    private String resultat2 = "";
-    private String resultat3 = "";
-    private String resultat4 = "";
+    private String resultat1 = "";  //nb lignes mat A
+    private String resultat2 = "";  //nb colonnes mat A
+    private String resultat3 = "";  //nblignes mat B
+    private String resultat4 = "";  //nb colonnes mat B
 
-    private TextField[][] tab2DA = new TextField[1000][1000];
-    private TextField[][] tab2DB = new TextField[1000][1000];
+    private TextField[][] tab2DA = new TextField[1000][1000];  //tableau 2D correspondant à la matrice A
+    private TextField[][] tab2DB = new TextField[1000][1000];  //tableau 2D correspondant à la matrice B
 
 
     /*
