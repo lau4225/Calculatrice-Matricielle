@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 
@@ -109,7 +110,7 @@ public class Controller {
                     try {
                         resultat[i] = Integer.parseInt(tableau1[i].getText()) + Integer.parseInt(tableau2[i].getText());
                     }catch (Exception e){ emptyDouble(); } }
-                reponse(resultat);
+                reponse(resultat, "ADDITION");
             }
 
         }
@@ -132,7 +133,7 @@ public class Controller {
                     try {
                         resultat[i] = Integer.parseInt(tableau1[i].getText()) - Integer.parseInt(tableau2[i].getText());
                     }catch (Exception e){ emptyDouble(); } }
-                reponse(resultat);
+                reponse(resultat, "SOUSTRACTION");
             }
 
         }
@@ -154,7 +155,7 @@ public class Controller {
                     try {
                         resultat[i] = Integer.parseInt(tableau1[i].getText()) * Integer.parseInt(tableau2[i].getText());
                     }catch (Exception e){ emptyDouble(); } }
-                reponse(resultat);
+                reponse(resultat, "PRODUIT HADAMARD");
             }
 
         }
@@ -193,7 +194,7 @@ public class Controller {
                     }
 
                 }
-                solo(corolaire, colonnes);
+                solo(corolaire, colonnes, "MULTIPLICATION PAR UN SCALAIRE");
                 facteur.setText("");
             }
         }
@@ -270,13 +271,18 @@ public class Controller {
     public void repDeterminant(int determinant, String lettre){
         Label reponse = new Label(Integer.toString(determinant));
 
+        reponse.setScaleX(1.4);reponse.setScaleY(1.4);
+        reponse.setAlignment(Pos.CENTER);
+
         Dialog dialog = new Dialog();
-        dialog.setHeight(500); dialog.setWidth(800);
         dialog.setHeaderText("Le déterminat de la matrice " + lettre + " est : ");
         dialog.getDialogPane().setContent(reponse);
+        dialog.setTitle("DÉTERMINANT");
         dialog.getDialogPane().getButtonTypes().add(
                 new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
         );
+
+        dialog.getDialogPane().setMinSize(200, 200);
         dialog.showAndWait();
     }
 
@@ -312,7 +318,7 @@ public class Controller {
 
             }
 
-            repMulti(resultat);
+            repMulti(resultat, "PRODUIT MATRICIEL");
         }else { wrongDimensions(); }
     }
 
@@ -379,17 +385,18 @@ public class Controller {
             }
 
         }
-        repMulti(resultat);
+        repMulti(resultat, "PUISSANCE");
+        power.setText("");
 
     }
     public void puissanceA(){puissance(expoA, Integer.parseInt(resultat1), Integer.parseInt(resultat2), tab2DA);}
     public void puissanceB(){puissance(expoB, Integer.parseInt(resultat3), Integer.parseInt(resultat4), tab2DB);}
 
-    public void produitVectoriel(){                                                             // rendu ici exceptions
+    public void produitVectoriel(){
 
         int[] resultat = new int[3];
 
-        if (Integer.parseInt(resultat2) ==  3 && Integer.parseInt(resultat4) == 3){
+        if (Integer.parseInt(resultat2) ==  3 && Integer.parseInt(resultat4) == 3 && Integer.parseInt(resultat1) ==1 &&Integer.parseInt(resultat3) == 1){
 
             for(int i = 0; i < resultat.length; i++){
 
@@ -403,7 +410,7 @@ public class Controller {
                         (Integer.parseInt(tableau1[1].getText())*Integer.parseInt(tableau2[0].getText()));
             }
 
-            reponse(resultat);
+            reponse(resultat, "PRODUIT VECTORIEL");
         }
         else {
                                                                             // idem
@@ -415,7 +422,7 @@ public class Controller {
     public void tensoriel() {  // matA mxn  & matB  pxq
 
         // resultat dimensions mp x nq
-        int m = Integer.parseInt(resultat1);                        // presque parfait, marche pas si 2X3 et 3X2
+        int m = Integer.parseInt(resultat1);
         int n = Integer.parseInt(resultat2);
         int p = Integer.parseInt(resultat3);
         int q = Integer.parseInt(resultat4);
@@ -459,12 +466,12 @@ public class Controller {
         GridPane reponse = new GridPane();
 
 
-        for (int i = 0; i< m ; i++){ //colonnes
-            for (int j =0; j < n ; j++){ //lignes
+        for (int i = 0; i< m ; i++){ //lignes
+            for (int j =0; j < n ; j++){ //colonnes
                 for (int k=0; k < p ; k++){ //colonnes total
                     for (int c = 0; c < q ; c++){ //lignes total
                         //position  matA  lignes, colonnes   mat B lignes colonnes    coordonnées colonnes, lignes
-                        reponse.add(new Label(String.valueOf(resultat[i][j][k][c])), c + (j*n), k + (i*m));
+                        reponse.add(new Label(String.valueOf(resultat[i][j][k][c])), c + (j*q), k + (i*p));
 
 
                     }
@@ -473,31 +480,12 @@ public class Controller {
             }
 
         }
-
-
-
-        reponse.setAlignment(Pos.TOP_CENTER);
-        reponse.setVgap(10); reponse.setHgap(10);
-
-        for (Node r: reponse.getChildren()) {
-            r.setScaleX(1.2); r.setScaleY(1.2);
-        }
-
-
-        Dialog dialog = new Dialog();
-        dialog.setHeight(500); dialog.setWidth(1000);
-        dialog.setHeaderText("Matrice Résultante : ");
-        dialog.getDialogPane().setContent(reponse);
-        dialog.getDialogPane().getButtonTypes().add(
-                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
-        );
-
-        dialog.showAndWait();
+            affichage(reponse, "PRODUIT TENSORIEL");
 
     }
 
 
-    public void repMulti(int[][] corolaire){            // à embellir plus tard
+    public void repMulti(int[][] corolaire, String operation){            
 
         GridPane reponse = new GridPane();
 
@@ -508,28 +496,14 @@ public class Controller {
             }
         }
 
-        reponse.setAlignment(Pos.TOP_CENTER);
-        reponse.setVgap(10); reponse.setHgap(10);
-
-        for (Node r: reponse.getChildren()) {
-            r.setScaleX(1.2); r.setScaleY(1.2);
-        }
-
-        Dialog dialog = new Dialog();
-        dialog.setHeight(500); dialog.setWidth(800);
-        dialog.setHeaderText("Matrice Résultante : ");
-        dialog.getDialogPane().setContent(reponse);
-        dialog.getDialogPane().getButtonTypes().add(
-                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
-        );
-        dialog.showAndWait();
+        affichage(reponse, operation);
 
     }
 
 
 
         //réponse d'une opération sur deux matrices
-    public void reponse(int[] corolaire){                                                       // à embellir plus tard
+    public void reponse(int[] corolaire,String operation){
 
         GridPane reponse = new GridPane();
 
@@ -538,26 +512,12 @@ public class Controller {
             reponse.add(new Label(String.valueOf(corolaire[i])), i%Integer.parseInt(resultat2), (int) (i/ Integer.parseInt(resultat2)));
         }
 
-        reponse.setAlignment(Pos.TOP_CENTER);
-        reponse.setVgap(10); reponse.setHgap(10);
-
-        for (Node r: reponse.getChildren()) {
-            r.setScaleX(1.2); r.setScaleY(1.2);
-        }
-
-        Dialog dialog = new Dialog();
-        dialog.setHeight(500); dialog.setWidth(800);
-        dialog.setHeaderText("Matrice Résultante : ");
-        dialog.getDialogPane().setContent(reponse);
-        dialog.getDialogPane().getButtonTypes().add(
-                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
-        );
-        dialog.showAndWait();
+        affichage(reponse, operation);
 
     }
 
         //reponse d'une opération sur une seule matrice
-    public void solo(int[] corolaire, int colonnes){     // donne la reponse à embellir plus tard aussi
+    public void solo(int[] corolaire, int colonnes, String operation){
 
         GridPane reponse = new GridPane();
 
@@ -566,23 +526,7 @@ public class Controller {
             reponse.add(new Label(String.valueOf(corolaire[i])), i%colonnes, (int) (i/colonnes));
         }
 
-        reponse.setAlignment(Pos.TOP_CENTER);
-        reponse.setVgap(10); reponse.setHgap(10);
-
-        for (Node r: reponse.getChildren()) {
-            r.setScaleX(1.2); r.setScaleY(1.2);
-        }
-
-
-        Dialog dialog = new Dialog();
-        dialog.setHeight(500); dialog.setWidth(800);
-        dialog.setHeaderText("Matrice Résultante : ");
-        dialog.getDialogPane().setContent(reponse);
-        dialog.getDialogPane().getButtonTypes().add(
-                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
-        );
-
-        dialog.showAndWait();
+        affichage(reponse, operation);
 
     }
 
@@ -597,21 +541,8 @@ public class Controller {
             }
         }
 
-        reponse.setAlignment(Pos.TOP_CENTER);
-        reponse.setVgap(10); reponse.setHgap(10);
+        affichage(reponse, "TRANSPOSITION");
 
-        for (Node r: reponse.getChildren()) {
-            r.setScaleX(1.2); r.setScaleY(1.2);
-        }
-
-        Dialog dialog = new Dialog();
-        dialog.setHeight(500); dialog.setWidth(800);
-        dialog.setHeaderText("Matrice Résultante : ");
-        dialog.getDialogPane().setContent(reponse);
-        dialog.getDialogPane().getButtonTypes().add(
-                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
-        );
-        dialog.showAndWait();
     }
 
     public void wrongDimensions(){ //message d'erreur qui va afficher
@@ -658,6 +589,28 @@ public class Controller {
         return vide;
     }
 
+    public void affichage(GridPane reponse, String operation){
 
+        reponse.setAlignment(Pos.CENTER);
+        reponse.setVgap(10); reponse.setHgap(13);
+
+        for (Node r: reponse.getChildren()) {
+            r.setScaleX(1.4); r.setScaleY(1.4);
+
+        }
+
+        Dialog dialog = new Dialog();
+
+        dialog.setResizable(true);
+        dialog.setTitle(operation);
+        dialog.setHeaderText("Matrice Résultante : ");
+        dialog.getDialogPane().setContent(reponse);
+        dialog.getDialogPane().getButtonTypes().add(
+                new ButtonType("OK DONE", ButtonBar.ButtonData.OK_DONE)
+        );
+        dialog.getDialogPane().setMinSize(250, 200);
+
+        dialog.showAndWait();
+    }
 
 }
