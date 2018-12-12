@@ -236,7 +236,7 @@ public class Controller {
     @FXML
     Button detB;
 
-    public void determinant(TextField[] tableau, int lignes, int colonnes, String lettre, TextField[][] tab){//Laurie rendu ici
+    public void determinant(TextField[] tableau, int lignes, int colonnes, String lettre, TextField[][] tab2D){
 
         boolean entier = caractere(tableau, lignes, colonnes, lettre);
 
@@ -263,27 +263,64 @@ public class Controller {
                         repDeterminant(det, lettre);
                         break;
 
-                    default :                 //À FAIRE POUR DES MATRICES D'ORDRE SUPÉRIEUR A 3
+                    default :
 
-                        int line = lignes;
-                        int column  = colonnes;
-                        int[][] calculDet = new int[line][column];
-
-                        if (line == 2 && column == 2){  /// pas ça
-
-                            det = (tempo[0]*tempo[3]) - (tempo[1]*tempo[2]);
-                            repDeterminant(det, lettre);
+                        int lines  = lignes;
+                        int columns = colonnes;
+                        int nbrFois = 0;
+                        int x = 0;
+                        int y = 0;
+                        int[][] matrice = new int[lignes][colonnes];
+                        int[] line = new int[colonnes];
+                        //élément à multiplier au coefficient
+                        for (int i = 0; i < colonnes; i++){
+                            line[i] = Integer.parseInt(tableau[i].getText());
                         }
-                        while (line !=2 && column !=2){
-
-                            for (int i = 0; i < lignes; i++){
-                                calculDet[i] = sousMatrice(tempo, line, column);
-                                line--;
-                                column--;
+                        for (int i = 0; i < lignes; i++){
+                            for (int j = 0; j < colonnes; j++){
+                                matrice[i][j] = Integer.parseInt(tab2D[i][j].getText());
                             }
+                        }
 
+
+                        //sous-matrice
+                        int[][] sousMatrice = new int[lignes -1][colonnes - 1];
+
+                        //int[][][] total = new int[lignes][lignes - 1][colonnes -1];
+
+                        //toutes les sous-matrices
+
+                        while (lines != 2 && columns != 2){
 
                         }
+                            for (int i = 0; i < lignes; i++){
+                                for (int j = 0; j < colonnes -1; i++){
+                                    x=i;
+                                    y =j;
+                                    sousMatrice = sousMatrices(matrice,lignes,colonnes, x, y);
+                                    line[i] = line[i]*sousMatrice[0][j]* (int) Math.pow(-1, j);
+                                }
+                            }
+                            nbrFois++;
+
+
+                        if (sousMatrice.length == 4){
+                            //calcul det
+                            for (int i =0 ; i < lines; i++){
+                                for (int j = 0; j < columns; j++){
+
+                                    det = det + ((int) Math.pow(-1, i+j)*line[i]*calculDet2(sousMatrice));
+                                }
+                            }
+                        }
+                       /* else {
+                           int lignes2 = lignes - nbrFois;
+                           int colonnes2 = colonnes- nbrFois;
+
+
+                            sousMatrice = sousMatrices(sousMatrice, lignes2, colonnes2, x, y);
+                        }*/
+                        repDeterminant(det, lettre);
                 }
             }else{
                 Carrée alert = new Carrée();
@@ -292,31 +329,30 @@ public class Controller {
         }
     }
 
-    public int[] sousMatrice(int[] mat, int lignes, int colonnes){
+    public int calculDet2(int[][] mat){
 
-        int dimension = (lignes -1)*(colonnes-1);
+        int det = 0;
+        det = mat[0][0]*mat[1][1] - mat[0][1]*mat[1][0];
+        return det;
+    }
 
-        int[] sousMat = new int[dimension];
-        int[] ligneDet = new int[colonnes];
+    public int[][] sousMatrices(int[][] mat, int lignes, int colonnes, int x, int y){
 
-        //ligne déteminant
-        for (int i = 0; i < colonnes; i++){
-            ligneDet[i] = mat[i];
-        }
-        //sous matrice
-        for (int i = 0; i < lignes - 1; i++){
-            for (int j = 0; j < colonnes -1 ; j++);{
+        int line = lignes -1;
+        int column = colonnes -1;
 
-                sousMat[i] = mat[i + colonnes];
-            }
-        }
-        //fusion élément de la ligne et sous matrice
-        for (int i = 0; i < dimension; i++){
+        int[][] sousMat = new int[line][column];
 
-            sousMat[i] = ligneDet[i]*sousMat[i];
+       //sousmat
+       for (int i = 0; i < line; i++){
+           for (int j = 0; j < column; j++){
 
-        }
+               if (i != x | j != y){
+                   sousMat[i][j] = mat[i][j];
+               }
 
+           }
+       }
         return sousMat;
     }
 
