@@ -236,9 +236,9 @@ public class Controller {
     @FXML
     Button detB;
 
-    public void determinant(TextField[] tableau, int lignes, int colonnes, String lettre, TextField[] tab){//Laurie rendu ici
+    public void determinant(TextField[] tableau, int lignes, int colonnes, String lettre, TextField[][] tab){//Laurie rendu ici
 
-        boolean entier = caractere(tab, lignes, colonnes, lettre);
+        boolean entier = caractere(tableau, lignes, colonnes, lettre);
 
         if (entier == false){
             //regarder si la matrice est carré
@@ -263,7 +263,27 @@ public class Controller {
                         repDeterminant(det, lettre);
                         break;
 
-                    default : det = 10; repDeterminant(det, lettre);                    //À FAIRE POUR DES MATRICES D'ORDRE SUPÉRIEUR A 3
+                    default :                 //À FAIRE POUR DES MATRICES D'ORDRE SUPÉRIEUR A 3
+
+                        int line = lignes;
+                        int column  = colonnes;
+                        int[][] calculDet = new int[line][column];
+
+                        if (line == 2 && column == 2){  /// pas ça
+
+                            det = (tempo[0]*tempo[3]) - (tempo[1]*tempo[2]);
+                            repDeterminant(det, lettre);
+                        }
+                        while (line !=2 && column !=2){
+
+                            for (int i = 0; i < lignes; i++){
+                                calculDet[i] = sousMatrice(tempo, line, column);
+                                line--;
+                                column--;
+                            }
+
+
+                        }
                 }
             }else{
                 Carrée alert = new Carrée();
@@ -272,8 +292,36 @@ public class Controller {
         }
     }
 
-    public void determinantA(){determinant(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A", tableau1);}
-    public void determinantB(){determinant(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), "B", tableau2);}
+    public int[] sousMatrice(int[] mat, int lignes, int colonnes){
+
+        int dimension = (lignes -1)*(colonnes-1);
+
+        int[] sousMat = new int[dimension];
+        int[] ligneDet = new int[colonnes];
+
+        //ligne déteminant
+        for (int i = 0; i < colonnes; i++){
+            ligneDet[i] = mat[i];
+        }
+        //sous matrice
+        for (int i = 0; i < lignes - 1; i++){
+            for (int j = 0; j < colonnes -1 ; j++);{
+
+                sousMat[i] = mat[i + colonnes];
+            }
+        }
+        //fusion élément de la ligne et sous matrice
+        for (int i = 0; i < dimension; i++){
+
+            sousMat[i] = ligneDet[i]*sousMat[i];
+
+        }
+
+        return sousMat;
+    }
+
+    public void determinantA(){determinant(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A", tab2DA);}
+    public void determinantB(){determinant(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), "B", tab2DB);}
 
     public void repDeterminant(int determinant, String lettre){
 
@@ -628,16 +676,6 @@ public class Controller {
         dialog.showAndWait();
     }
 
-    public void wrongDimensions(){ //message d'erreur qui va afficher
-
-        Alert alerte = new Alert(Alert.AlertType.INFORMATION);
-        alerte.setTitle("Information importante");
-        alerte.setHeaderText("Les dimensions des matrices A et B ne concordent pas!");
-        alerte.setContentText(
-                "Vous pouvez effectuer une autre opération ou bien cliquer sur démarrer");
-        alerte.showAndWait();
-    }
-
     public void emptyDouble(){ //message d'erreur qui va afficher si toutes les cases ne sont pas remplies
 
         Alert alerte = new Alert(Alert.AlertType.INFORMATION);
@@ -701,6 +739,8 @@ public class Controller {
 
     }
 
-
+//si reste temps
+    //dialogue héritage
+    //case vide héritage
 
 }

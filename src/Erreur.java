@@ -1,9 +1,8 @@
-import AlerteErreur.Alerte;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
-public class Erreur extends Application implements Alerte {
+public class Erreur extends Application {
 
     private String headerText;
     private String contentText;
