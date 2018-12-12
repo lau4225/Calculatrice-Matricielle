@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 
@@ -99,7 +100,7 @@ public class Controller {
                         try {
                             resultat[i] = Integer.parseInt(tableau1[i].getText()) + Integer.parseInt(tableau2[i].getText());
                         }catch (Exception e){ emptyDouble(); } }
-                    reponse(resultat);
+                    reponse(resultat, "ADDITION");
                 }
             }
             else {
@@ -128,12 +129,13 @@ public class Controller {
                         try {
                             resultat[i] = Integer.parseInt(tableau1[i].getText()) - Integer.parseInt(tableau2[i].getText());
                         }catch (Exception e){ emptyDouble(); } }
-                    reponse(resultat);
+                    reponse(resultat, "SOUSTRACTION);
                 }
             }
             else {
                 Same alert = new Same();
                 alert.creationAlerte();
+
             }
         }
     }
@@ -156,7 +158,7 @@ public class Controller {
                         try {
                             resultat[i] = Integer.parseInt(tableau1[i].getText()) * Integer.parseInt(tableau2[i].getText());
                         }catch (Exception e){ emptyDouble(); } }
-                    reponse(resultat);
+                    reponse(resultat, "PRODUIT HADAMARD);
                 }
             }
             else{
@@ -197,9 +199,10 @@ public class Controller {
                             emptySolo();
                         }
                     }
-                    solo(corolaire, colonnes);
+                    solo(corolaire, colonnes, "MULTIPLICATION PAR UN SCALAIRE");
                     facteur.setText("");
                 }
+
             }
         }
     }
@@ -327,13 +330,18 @@ public class Controller {
 
         Label reponse = new Label(Integer.toString(determinant));
 
+        reponse.setScaleX(1.4);reponse.setScaleY(1.4);
+        reponse.setAlignment(Pos.CENTER);
+
         Dialog dialog = new Dialog();
-        dialog.setHeight(500); dialog.setWidth(800);
         dialog.setHeaderText("Le déterminat de la matrice " + lettre + " est : ");
         dialog.getDialogPane().setContent(reponse);
+        dialog.setTitle("DÉTERMINANT");
         dialog.getDialogPane().getButtonTypes().add(
                 new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
         );
+
+        dialog.getDialogPane().setMinSize(200, 200);
         dialog.showAndWait();
     }
 
@@ -367,7 +375,7 @@ public class Controller {
                             repC = 0;
                         }
                     }
-                    repMulti(resultat);
+                    repMulti(resultat, "PRODUIT MATRICIEL");
 
                 } else {
                     Dimension alert1 = new Dimension();
@@ -375,6 +383,7 @@ public class Controller {
                 }
             }
         }
+
 
     @FXML
     TextField expoB;
@@ -436,7 +445,8 @@ public class Controller {
                         nbrMulti++;
                     }
                 }
-                repMulti(resultat);
+                repMulti(resultat, "PUISSANCE");
+                power.setText("");
             }
             else{
                 Carrée alert = new Carrée();
@@ -448,12 +458,13 @@ public class Controller {
     public void puissanceA(){puissance(expoA, Integer.parseInt(resultat1), Integer.parseInt(resultat2), tab2DA, tableau1, "A");}
     public void puissanceB(){puissance(expoB, Integer.parseInt(resultat3), Integer.parseInt(resultat4), tab2DB, tableau2, "B");}
 
-    public void produitVectoriel(){                                                             // rendu ici exceptions
+    public void produitVectoriel(){
 
         boolean entier = caractere(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A");
         boolean entier2 = caractere(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), "B");
 
         int[] resultat = new int[3];
+
 
         if (entier == false && entier2 == false){
             if (Integer.parseInt(resultat2) ==  3 && Integer.parseInt(resultat4) == 3 && Integer.parseInt(resultat1) == 1
@@ -470,8 +481,7 @@ public class Controller {
                     resultat[2] = (Integer.parseInt(tableau1[0].getText())*Integer.parseInt(tableau2[1].getText())) -
                             (Integer.parseInt(tableau1[1].getText())*Integer.parseInt(tableau2[0].getText()));
                 }
-
-                reponse(resultat);
+                reponse(resultat, "PRODUIT VECTORIEL");
             }
             else {
                 Vecto alert = new Vecto();
@@ -484,10 +494,17 @@ public class Controller {
     Button tensoriel;
     public void tensoriel() {  // matA mxn  & matB  pxq
 
+        // resultat dimensions mp x nq
+        int m = Integer.parseInt(resultat1);
+        int n = Integer.parseInt(resultat2);
+        int p = Integer.parseInt(resultat3);
+        int q = Integer.parseInt(resultat4);
+
         boolean entier = caractere(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A");
         boolean entier2 = caractere(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), "B");
 
         if (entier == false && entier2 == false){
+
 
             // resultat dimensions mp x nq
             int m = Integer.parseInt(resultat1);                        // presque parfait, marche pas si 2X3 et 3X2
@@ -517,49 +534,34 @@ public class Controller {
                     etape2[k/q][k%q] = etape1[k];
                 }
 
-                //On prend ce tableau 2D et on le met dans un tableau de tableau 2D
-                etape3[j] = etape2;
-            }
-
-            // on retransforme ce tableau 1D en tableau 2D
-            for (int r = 0; r < etape3.length; r++){
-                //ajouter les valeurs au gridpane
-                resultat [r/n][r%n] = etape3[r];
-            }
-
-            GridPane reponse = new GridPane();
-
-            for (int i = 0; i< m ; i++){ //colonnes
-                for (int j =0; j < n ; j++){ //lignes
-                    for (int k=0; k < p ; k++){ //colonnes total
-                        for (int c = 0; c < q ; c++){ //lignes total
-                            //position  matA  lignes, colonnes   mat B lignes colonnes    coordonnées colonnes, lignes
-                            reponse.add(new Label(String.valueOf(resultat[i][j][k][c])), c + (j*n), k + (i*m));
-                        }
-                    }
-                }
-            }
-
-            reponse.setAlignment(Pos.TOP_CENTER);
-            reponse.setVgap(10); reponse.setHgap(10);
-
-            for (Node r: reponse.getChildren()) {
-                r.setScaleX(1.2); r.setScaleY(1.2);
-            }
-
-            Dialog dialog = new Dialog();
-            dialog.setHeight(500); dialog.setWidth(1000);
-            dialog.setHeaderText("Matrice Résultante : ");
-            dialog.getDialogPane().setContent(reponse);
-            dialog.getDialogPane().getButtonTypes().add(
-                    new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
-            );
-
-            dialog.showAndWait();
+            //On prend ce tableau 2D et on le met dans un tableau de tableau 2D
+            etape3[j] = etape2;
         }
+
+
+        // on retransforme ce tableau 1D en tableau 2D
+        for (int r = 0; r < etape3.length; r++){
+            //ajouter les valeurs au gridpane
+            resultat [r/n][r%n] = etape3[r];
+        }
+
+        GridPane reponse = new GridPane();
+
+
+        for (int i = 0; i< m ; i++){ //lignes
+            for (int j =0; j < n ; j++){ //colonnes
+                for (int k=0; k < p ; k++){ //colonnes total
+                    for (int c = 0; c < q ; c++){ //lignes total
+                        //position  matA  lignes, colonnes   mat B lignes colonnes    coordonnées colonnes, lignes
+                        reponse.add(new Label(String.valueOf(resultat[i][j][k][c])), c + (j*q), k + (i*p));
+        }
+            affichage(reponse, "PRODUIT TENSORIEL");
+
     }
 
-    public void repMulti(int[][] corolaire){            // à embellir plus tard
+
+    public void repMulti(int[][] corolaire, String operation){            
+
 
         GridPane reponse = new GridPane();
 
@@ -570,28 +572,14 @@ public class Controller {
             }
         }
 
-        reponse.setAlignment(Pos.TOP_CENTER);
-        reponse.setVgap(10); reponse.setHgap(10);
-
-        for (Node r: reponse.getChildren()) {
-            r.setScaleX(1.2); r.setScaleY(1.2);
-        }
-
-        Dialog dialog = new Dialog();
-        dialog.setHeight(500); dialog.setWidth(800);
-        dialog.setHeaderText("Matrice Résultante : ");
-        dialog.getDialogPane().setContent(reponse);
-        dialog.getDialogPane().getButtonTypes().add(
-                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
-        );
-        dialog.showAndWait();
+        affichage(reponse, operation);
 
     }
 
 
 
         //réponse d'une opération sur deux matrices
-    public void reponse(int[] corolaire){                                                       // à embellir plus tard
+    public void reponse(int[] corolaire,String operation){
 
         GridPane reponse = new GridPane();
 
@@ -600,26 +588,12 @@ public class Controller {
             reponse.add(new Label(String.valueOf(corolaire[i])), i%Integer.parseInt(resultat2), (int) (i/ Integer.parseInt(resultat2)));
         }
 
-        reponse.setAlignment(Pos.TOP_CENTER);
-        reponse.setVgap(10); reponse.setHgap(10);
-
-        for (Node r: reponse.getChildren()) {
-            r.setScaleX(1.2); r.setScaleY(1.2);
-        }
-
-        Dialog dialog = new Dialog();
-        dialog.setHeight(500); dialog.setWidth(800);
-        dialog.setHeaderText("Matrice Résultante : ");
-        dialog.getDialogPane().setContent(reponse);
-        dialog.getDialogPane().getButtonTypes().add(
-                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
-        );
-        dialog.showAndWait();
+        affichage(reponse, operation);
 
     }
 
         //reponse d'une opération sur une seule matrice
-    public void solo(int[] corolaire, int colonnes){     // donne la reponse à embellir plus tard aussi
+    public void solo(int[] corolaire, int colonnes, String operation){
 
         GridPane reponse = new GridPane();
 
@@ -628,23 +602,7 @@ public class Controller {
             reponse.add(new Label(String.valueOf(corolaire[i])), i%colonnes, (int) (i/colonnes));
         }
 
-        reponse.setAlignment(Pos.TOP_CENTER);
-        reponse.setVgap(10); reponse.setHgap(10);
-
-        for (Node r: reponse.getChildren()) {
-            r.setScaleX(1.2); r.setScaleY(1.2);
-        }
-
-
-        Dialog dialog = new Dialog();
-        dialog.setHeight(500); dialog.setWidth(800);
-        dialog.setHeaderText("Matrice Résultante : ");
-        dialog.getDialogPane().setContent(reponse);
-        dialog.getDialogPane().getButtonTypes().add(
-                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
-        );
-
-        dialog.showAndWait();
+        affichage(reponse, operation);
 
     }
 
@@ -659,21 +617,8 @@ public class Controller {
             }
         }
 
-        reponse.setAlignment(Pos.TOP_CENTER);
-        reponse.setVgap(10); reponse.setHgap(10);
+        affichage(reponse, "TRANSPOSITION");
 
-        for (Node r: reponse.getChildren()) {
-            r.setScaleX(1.2); r.setScaleY(1.2);
-        }
-
-        Dialog dialog = new Dialog();
-        dialog.setHeight(500); dialog.setWidth(800);
-        dialog.setHeaderText("Matrice Résultante : ");
-        dialog.getDialogPane().setContent(reponse);
-        dialog.getDialogPane().getButtonTypes().add(
-                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
-        );
-        dialog.showAndWait();
     }
 
     public void emptyDouble(){ //message d'erreur qui va afficher si toutes les cases ne sont pas remplies
@@ -710,6 +655,30 @@ public class Controller {
         return vide;
     }
 
+
+    public void affichage(GridPane reponse, String operation){
+
+        reponse.setAlignment(Pos.CENTER);
+        reponse.setVgap(10); reponse.setHgap(13);
+
+        for (Node r: reponse.getChildren()) {
+            r.setScaleX(1.4); r.setScaleY(1.4);
+
+        }
+
+        Dialog dialog = new Dialog();
+
+        dialog.setResizable(true);
+        dialog.setTitle(operation);
+        dialog.setHeaderText("Matrice Résultante : ");
+        dialog.getDialogPane().setContent(reponse);
+        dialog.getDialogPane().getButtonTypes().add(
+                new ButtonType("OK DONE", ButtonBar.ButtonData.OK_DONE)
+        );
+        dialog.getDialogPane().setMinSize(250, 200);
+
+        dialog.showAndWait();
+    }
     public boolean caractere(TextField[] tableau, int ligne, int colonne, String lettre){
 
         boolean mauvais = false;
@@ -742,5 +711,4 @@ public class Controller {
 //si reste temps
     //dialogue héritage
     //case vide héritage
-
 }
