@@ -1,5 +1,6 @@
 package sample;
 
+import AlerteErreur.*;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -27,12 +28,6 @@ public class Controller {
     private TextField[][] tab2DB = new TextField[1000][1000];  //tableau 2D correspondant à la matrice B
 
 
-    /*
-    4/3 = lignes
-    4%3 = colonnes
-     */
-
-
     public void dialog(){
         matA.getChildren().clear();
         matB.getChildren().clear();
@@ -42,18 +37,13 @@ public class Controller {
         resultat3 = size("B", "lignes");
         resultat4 = size("B", "colonnes");
 
-
         int nbTextA = Integer.parseInt(resultat1)*Integer.parseInt(resultat2);
         int nbTextB = Integer.parseInt(resultat3)*Integer.parseInt(resultat4);
 
         try {
             creation(nbTextA, Integer.parseInt(resultat1), Integer.parseInt(resultat2), tableau1, matA, tab2DA);
             creation(nbTextB, Integer.parseInt(resultat3), Integer.parseInt(resultat4), tableau2, matB, tab2DB);
-        }catch (Exception e){
-
-        }
-
-
+        }catch (Exception e){ }
     }
 
     public String size (String lettre, String choix){
@@ -66,7 +56,6 @@ public class Controller {
             dialog.setHeaderText("Vous devez entrer un nombre!");
             resultat = dialog.showAndWait().get();
         }
-
         return resultat;
     }
 
@@ -79,7 +68,6 @@ public class Controller {
                 int row = (i/nbColonnes);
                 matrice.add(tableau[i], col, row);
         }
-
         //Creation des tableaux 2D
         int k = 0;
         for (int i = 0; i < nbLignes; i++){
@@ -90,77 +78,93 @@ public class Controller {
                 k++;
             }
         }
-
     }
-
 
     @FXML
     Button somme;
     public void addition(){
 
-        if (resultat1.equals(resultat3) && resultat2.equals(resultat4)) {
+        boolean entier = caractere(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A");
+        boolean entier2 = caractere(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), "B");
 
-            // on a juste 2 matrices alors pas besoin de passer en parametres
-            if (casesVides()){ emptyDouble(); }
-            else {
-                int nombre = Integer.parseInt(resultat1) * Integer.parseInt(resultat2);
-                int[] resultat = new int[nombre];
+        if (entier == false && entier2 == false){
+            if (resultat1.equals(resultat3) && resultat2.equals(resultat4)) {
 
-                for (int i = 0; i < nombre; i++) {
-                    try {
-                        resultat[i] = Integer.parseInt(tableau1[i].getText()) + Integer.parseInt(tableau2[i].getText());
-                    }catch (Exception e){ emptyDouble(); } }
-                reponse(resultat, "ADDITION");
+                // on a juste 2 matrices alors pas besoin de passer en parametres
+                if (casesVides()){ emptyDouble(); }
+                else {
+                    int nombre = Integer.parseInt(resultat1) * Integer.parseInt(resultat2);
+                    int[] resultat = new int[nombre];
+
+                    for (int i = 0; i < nombre; i++) {
+                        try {
+                            resultat[i] = Integer.parseInt(tableau1[i].getText()) + Integer.parseInt(tableau2[i].getText());
+                        }catch (Exception e){ emptyDouble(); } }
+                    reponse(resultat, "ADDITION");
+                }
             }
-
-        }
-        else {
-             wrongDimensions();
+            else {
+                Same alert = new Same();
+                alert.creationAlerte();
+            }
         }
 
     }
+
     @FXML
     Button difference;
     public void soustraction(){
 
-        if (resultat1.equals(resultat3) && resultat2.equals(resultat4)) {
+        boolean entier = caractere(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A");
+        boolean entier2 = caractere(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), "B");
 
-            if (casesVides()){ emptyDouble(); }
-            else {
-                int nombre = Integer.parseInt(resultat1) * Integer.parseInt(resultat2);
-                int[] resultat = new int[nombre];
-                for (int i = 0; i < nombre; i++) {
-                    try {
-                        resultat[i] = Integer.parseInt(tableau1[i].getText()) - Integer.parseInt(tableau2[i].getText());
-                    }catch (Exception e){ emptyDouble(); } }
-                reponse(resultat, "SOUSTRACTION");
+        if (entier == false && entier2 == false){
+            if (resultat1.equals(resultat3) && resultat2.equals(resultat4)){
+
+                if (casesVides()){ emptyDouble(); }
+                else {
+                    int nombre = Integer.parseInt(resultat1) * Integer.parseInt(resultat2);
+                    int[] resultat = new int[nombre];
+                    for (int i = 0; i < nombre; i++) {
+                        try {
+                            resultat[i] = Integer.parseInt(tableau1[i].getText()) - Integer.parseInt(tableau2[i].getText());
+                        }catch (Exception e){ emptyDouble(); } }
+                    reponse(resultat, "SOUSTRACTION);
+                }
             }
+            else {
+                Same alert = new Same();
+                alert.creationAlerte();
 
-        }
-        else {
-            wrongDimensions();
+            }
         }
     }
 
     @FXML
     Button hadam;
     public void hadamard(){
-        if (resultat1.equals(resultat3) && resultat2.equals(resultat4)) {
 
-            if (casesVides()){ emptyDouble(); }
-            else {
-                int nombre = Integer.parseInt(resultat1) * Integer.parseInt(resultat2);
-                int[] resultat = new int[nombre];
-                for (int i = 0; i < nombre; i++) {
-                    try {
-                        resultat[i] = Integer.parseInt(tableau1[i].getText()) * Integer.parseInt(tableau2[i].getText());
-                    }catch (Exception e){ emptyDouble(); } }
-                reponse(resultat, "PRODUIT HADAMARD");
+        boolean entier = caractere(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A");
+        boolean entier2 = caractere(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), "B");
+
+        if (entier == false && entier2 == false){
+            if (resultat1.equals(resultat3) && resultat2.equals(resultat4)){
+
+                if (casesVides()){ emptyDouble(); }
+                else {
+                    int nombre = Integer.parseInt(resultat1) * Integer.parseInt(resultat2);
+                    int[] resultat = new int[nombre];
+                    for (int i = 0; i < nombre; i++) {
+                        try {
+                            resultat[i] = Integer.parseInt(tableau1[i].getText()) * Integer.parseInt(tableau2[i].getText());
+                        }catch (Exception e){ emptyDouble(); } }
+                    reponse(resultat, "PRODUIT HADAMARD);
+                }
             }
-
-        }
-        else {
-            wrongDimensions();
+            else{
+                Same alert = new Same();
+                alert.creationAlerte();
+            }
         }
     }
 
@@ -172,43 +176,49 @@ public class Controller {
     Button scalaireB;
     @FXML
     TextField produitNbB;
+    public void multiScalaire(TextField[] tableau, int lignes, int colonnes, TextField facteur, String lettre) {
 
+        boolean entier = caractere(tableau, lignes, colonnes, lettre);
 
-    public void multiScalaire(TextField[] tableau, int lignes, int colonnes, TextField facteur) {
         int[] corolaire = new int[lignes * colonnes];
         boolean vide = false;
 
-        if (!facteur.getText().isEmpty()) { //Si la case n'est pas vide pour 1 seule matrice
-            for (int i = 0; i < corolaire.length; i++) { //regarder s'il y a des cases vides
-                if(tableau[i].getText().isEmpty()){ //Si oui, vide est vrai
-                    vide = true;
-                }}
+        if (entier == false){
+            if (!facteur.getText().isEmpty()) { //Si la case n'est pas vide pour 1 seule matrice
+                for (int i = 0; i < corolaire.length; i++) { //regarder s'il y a des cases vides
+                    if(tableau[i].getText().isEmpty()){ //Si oui, vide est vrai
+                        vide = true;
+                    }}
 
-            if (vide){ emptySolo(); }
-            else {
-                for (int i = 0; i < corolaire.length; i++) {
-                    try {
-                        corolaire[i] = Integer.parseInt(tableau[i].getText()) * Integer.parseInt(facteur.getText());
-                    } catch (Exception e) {
-                        emptySolo();
+                if (vide){ emptySolo(); }
+                else {
+                    for (int i = 0; i < corolaire.length; i++) {
+                        try {
+                            corolaire[i] = Integer.parseInt(tableau[i].getText()) * Integer.parseInt(facteur.getText());
+                        } catch (Exception e) {
+                            emptySolo();
+                        }
                     }
-
+                    solo(corolaire, colonnes, "MULTIPLICATION PAR UN SCALAIRE");
+                    facteur.setText("");
                 }
-                solo(corolaire, colonnes, "MULTIPLICATION PAR UN SCALAIRE");
-                facteur.setText("");
+
             }
         }
     }
 
-    public void multiScalaireA() { multiScalaire(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), produitNbA); }
-    public void multiScalaireB() { multiScalaire(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), produitNbB); }
+    public void multiScalaireA() { multiScalaire(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), produitNbA, "A"); }
+    public void multiScalaireB() { multiScalaire(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), produitNbB, "B"); }
 
     @FXML
     Button transpoA;
     @FXML
     Button transpoB;
-    public void transposer(TextField[][] tableau, int lignes, int colonnes){
+    public void transposer(TextField[][] tableau, int lignes, int colonnes, TextField[] tab, String lettre){
 
+        boolean entier = caractere(tab, lignes, colonnes, lettre);
+
+        if (entier == false){
             int[][] resultat = new int[colonnes][lignes];
 
             for (int i = 0; i < colonnes; i++) {
@@ -216,59 +226,108 @@ public class Controller {
                 for (int j = 0; j < lignes; j++) {
                     resultat[i][j] = Integer.parseInt(tableau[j][i].getText());
                 }
-
             }
-
             repTranspo(resultat, colonnes, lignes);
+        }
     }
 
-    public void transposerA(){ transposer(tab2DA, Integer.parseInt(resultat1), Integer.parseInt(resultat2));}
-    public void transposerB(){ transposer(tab2DB, Integer.parseInt(resultat3), Integer.parseInt(resultat4));}
-
-
+    public void transposerA(){ transposer(tab2DA, Integer.parseInt(resultat1), Integer.parseInt(resultat2), tableau1, "A");}
+    public void transposerB(){ transposer(tab2DB, Integer.parseInt(resultat3), Integer.parseInt(resultat4), tableau2, "B");}
 
     @FXML
     Button detA;
     @FXML
     Button detB;
 
-    public void determinant(TextField[] tableau, int lignes, int colonnes, String lettre){//Laurie rendu ici
+    public void determinant(TextField[] tableau, int lignes, int colonnes, String lettre, TextField[][] tab){//Laurie rendu ici
+
+        boolean entier = caractere(tableau, lignes, colonnes, lettre);
+
+        if (entier == false){
+            //regarder si la matrice est carré
+            if (lignes == colonnes){
+                //transformer toutes les textfield
+                int[] tempo = new int[lignes*colonnes];
+                int det = 0;
+
+                for (int i=0; i< tempo.length; i++){
+                    tempo[i] = Integer.parseInt(tableau[i].getText());
+                }
+                switch (lignes){
+                    case 1 : repDeterminant(tempo[0], lettre); break;
+                    case 2 :
+                        det = (tempo[0]*tempo[3]) - (tempo[1]*tempo[2]);
+                        repDeterminant(det, lettre);
+                        break;
+
+                    case 3 :
+                        det = ((tempo[0]*tempo[4]*tempo[8]) + (tempo[1]*tempo[5]*tempo[6]) + (tempo[2]*tempo[3]*tempo[7])) -
+                                ((tempo[6]*tempo[4]*tempo[2]) + (tempo[7]*tempo[5]*tempo[0]) + (tempo[8]*tempo[3]*tempo[1]));
+                        repDeterminant(det, lettre);
+                        break;
+
+                    default :                 //À FAIRE POUR DES MATRICES D'ORDRE SUPÉRIEUR A 3
+
+                        int line = lignes;
+                        int column  = colonnes;
+                        int[][] calculDet = new int[line][column];
+
+                        if (line == 2 && column == 2){  /// pas ça
+
+                            det = (tempo[0]*tempo[3]) - (tempo[1]*tempo[2]);
+                            repDeterminant(det, lettre);
+                        }
+                        while (line !=2 && column !=2){
+
+                            for (int i = 0; i < lignes; i++){
+                                calculDet[i] = sousMatrice(tempo, line, column);
+                                line--;
+                                column--;
+                            }
 
 
-        //regarder si la matrice est carré
-        if (lignes == colonnes){
-            //transformer toutes les textfield
-            int[] tempo = new int[lignes*colonnes];
-            int det = 0;
-
-            for (int i=0; i< tempo.length; i++){
-                tempo[i] = Integer.parseInt(tableau[i].getText());
+                        }
+                }
+            }else{
+                Carrée alert = new Carrée();
+                alert.creationAlerte();
             }
-            switch (lignes){
-                case 1 : repDeterminant(tempo[0], lettre); break;
-                case 2 :
-                    det = (tempo[0]*tempo[3]) - (tempo[1]*tempo[2]);
-                repDeterminant(det, lettre);
-                break;
-
-                case 3 :
-                    det = ((tempo[0]*tempo[4]*tempo[8]) + (tempo[1]*tempo[5]*tempo[6]) + (tempo[2]*tempo[3]*tempo[7])) -
-                            ((tempo[6]*tempo[4]*tempo[2]) + (tempo[7]*tempo[5]*tempo[0]) + (tempo[8]*tempo[3]*tempo[1]));
-                    repDeterminant(det, lettre);
-                    break;
-
-                default : det = 10; repDeterminant(det, lettre);                    //À FAIRE POUR DES MATRICES D'ORDRE SUPÉRIEUR A 3
-            }
-        }else{
-                                                                                            //dialog que la matrice doit être carré
         }
     }
 
-    public void determinantA(){determinant(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A");}
-    public void determinantB(){determinant(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), "B");}
+    public int[] sousMatrice(int[] mat, int lignes, int colonnes){
 
+        int dimension = (lignes -1)*(colonnes-1);
+
+        int[] sousMat = new int[dimension];
+        int[] ligneDet = new int[colonnes];
+
+        //ligne déteminant
+        for (int i = 0; i < colonnes; i++){
+            ligneDet[i] = mat[i];
+        }
+        //sous matrice
+        for (int i = 0; i < lignes - 1; i++){
+            for (int j = 0; j < colonnes -1 ; j++);{
+
+                sousMat[i] = mat[i + colonnes];
+            }
+        }
+        //fusion élément de la ligne et sous matrice
+        for (int i = 0; i < dimension; i++){
+
+            sousMat[i] = ligneDet[i]*sousMat[i];
+
+        }
+
+        return sousMat;
+    }
+
+    public void determinantA(){determinant(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A", tab2DA);}
+    public void determinantB(){determinant(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), "B", tab2DB);}
 
     public void repDeterminant(int determinant, String lettre){
+
         Label reponse = new Label(Integer.toString(determinant));
 
         reponse.setScaleX(1.4);reponse.setScaleY(1.4);
@@ -286,134 +345,148 @@ public class Controller {
         dialog.showAndWait();
     }
 
+        public void multiplier() {//Condition pour l'addition : si A (m x n) et B (n x p)
 
-    public void multiplier(){//Condition pour l'addition : si A (m x n) et B (n x p)
-        if (resultat2.equals(resultat3)){
-            int[][] resultat = new int[Integer.parseInt(resultat1)][Integer.parseInt(resultat4)];
+            boolean entier = caractere(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A");
+            boolean entier2 = caractere(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), "B");
 
-            int repC =0;
-            int produit = 0;
+            if (entier == false && entier2 == false){
+                if (resultat2.equals(resultat3)){
+                    int[][] resultat = new int[Integer.parseInt(resultat1)][Integer.parseInt(resultat4)];
 
+                    int repC = 0;
+                    int produit = 0;
 
-            for (int i = 0; i < Integer.parseInt(resultat1); i++) { //nb de lignes
+                    for (int i = 0; i < Integer.parseInt(resultat1); i++) { //nb de lignes
 
-                for (int j = 0; j < Integer.parseInt(resultat4); j++) {  // nb colonnes
+                        for (int j = 0; j < Integer.parseInt(resultat4); j++) {  // nb colonnes
 
-                    for (int k = 0; k < Integer.parseInt(resultat2); k++) {  //represente k dans la definition
-                        try {
+                            for (int k = 0; k < Integer.parseInt(resultat2); k++) {  //represente k dans la definition
+                                try {
 
+                                    produit = Integer.parseInt(tab2DA[i][k].getText()) * Integer.parseInt(tab2DB[k][j].getText());
+                                    repC = repC + produit;
 
-                            produit = Integer.parseInt(tab2DA[i][k].getText())*Integer.parseInt(tab2DB[k][j].getText());
-                            repC = repC + produit;
-
-                        } catch (Exception e) {
-                            System.out.println("yolo");
+                                } catch (Exception e) {
+                                    System.out.println("yolo");
+                                }
+                            }
+                            resultat[i][j] = repC;
+                            repC = 0;
                         }
                     }
+                    repMulti(resultat, "PRODUIT MATRICIEL");
 
-                    resultat[i][j] = repC;
-                    repC =0;
-
+                } else {
+                    Dimension alert1 = new Dimension();
+                    alert1.creationAlerte();
                 }
-
             }
+        }
 
-            repMulti(resultat, "PRODUIT MATRICIEL");
-        }else { wrongDimensions(); }
-    }
 
     @FXML
     TextField expoB;
     @FXML
     TextField expoA;
 
-    public void puissance(TextField power, int lignes, int colonnes, TextField[][] tableau){ //doit être carrée
+    public void puissance(TextField power, int lignes, int colonnes, TextField[][] tableau, TextField[] tab, String lettre){ //doit être carrée
+
+       boolean entier =  caractere(tab, lignes, colonnes, lettre);
 
         int produit = 0;
         int repC = 0;
         int[][] resultat = new int[lignes][colonnes];
         int exposant  = Integer.parseInt(power.getText());
 
-        if (lignes == colonnes){
+        if (entier == false){
+            if (lignes == colonnes){
 
-            if (exposant == 0){
-                for (int i = 0; i < lignes; i++){
-                    for (int j = 0; j < colonnes; j++){
-                        resultat[i][j] = 1;
+                if (exposant == 0){
+                    for (int i = 0; i < lignes; i++){
+                        for (int j = 0; j < colonnes; j++){
+                            resultat[i][j] = 1;
+                        }
                     }
                 }
-            }
 
-            if (exposant == 1){
-                for (int i = 0; i < lignes; i++){
-                    for (int j = 0; j < colonnes; j++){
-                        resultat[i][j] = Integer.parseInt(tableau[i][j].getText());
+                if (exposant == 1){
+                    for (int i = 0; i < lignes; i++){
+                        for (int j = 0; j < colonnes; j++){
+                            resultat[i][j] = Integer.parseInt(tableau[i][j].getText());
+                        }
                     }
                 }
+
+                if (exposant > 1){
+
+                    int nbrMulti = 1;
+
+                    while (nbrMulti < exposant){
+
+                        for (int i = 0; i < lignes; i++) { //nb de lignes
+
+                            for (int j = 0; j < colonnes; j++) {  // nb colonnes
+
+                                for (int k = 0; k < lignes; k++){
+
+                                    try {
+                                        produit = Integer.parseInt(tableau[i][k].getText())*Integer.parseInt(tableau[k][j].getText());
+                                        repC = repC + produit;
+
+                                    } catch (Exception e) {
+                                        System.out.println("yolo");
+                                    }
+                                }
+                                resultat[i][j] = resultat[i][j] + repC;
+                                repC =0;
+                            }
+                        }
+                        nbrMulti++;
+                    }
+                }
+                repMulti(resultat, "PUISSANCE");
+                power.setText("");
             }
-
-            if (exposant > 1){
-
-                 int nbrMulti = 1;
-
-                 while (nbrMulti < exposant){
-
-                     for (int i = 0; i < lignes; i++) { //nb de lignes
-
-                         for (int j = 0; j < colonnes; j++) {  // nb colonnes
-
-                             for (int k = 0; k < lignes; k++){
-
-                                 try {
-                                     produit = Integer.parseInt(tableau[i][k].getText())*Integer.parseInt(tableau[k][j].getText());
-                                     repC = repC + produit;
-
-                                 } catch (Exception e) {
-                                     System.out.println("yolo");
-                                 }
-
-
-                             }
-                             resultat[i][j] = resultat[i][j] + repC;
-                             repC =0;
-
-                         }
-
-                     }
-                     nbrMulti++;
-                 }
+            else{
+                Carrée alert = new Carrée();
+                alert.creationAlerte();
             }
-
         }
-        repMulti(resultat, "PUISSANCE");
-        power.setText("");
-
     }
-    public void puissanceA(){puissance(expoA, Integer.parseInt(resultat1), Integer.parseInt(resultat2), tab2DA);}
-    public void puissanceB(){puissance(expoB, Integer.parseInt(resultat3), Integer.parseInt(resultat4), tab2DB);}
+
+    public void puissanceA(){puissance(expoA, Integer.parseInt(resultat1), Integer.parseInt(resultat2), tab2DA, tableau1, "A");}
+    public void puissanceB(){puissance(expoB, Integer.parseInt(resultat3), Integer.parseInt(resultat4), tab2DB, tableau2, "B");}
 
     public void produitVectoriel(){
 
+        boolean entier = caractere(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A");
+        boolean entier2 = caractere(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), "B");
+
         int[] resultat = new int[3];
 
-        if (Integer.parseInt(resultat2) ==  3 && Integer.parseInt(resultat4) == 3 && Integer.parseInt(resultat1) ==1 &&Integer.parseInt(resultat3) == 1){
 
-            for(int i = 0; i < resultat.length; i++){
+        if (entier == false && entier2 == false){
+            if (Integer.parseInt(resultat2) ==  3 && Integer.parseInt(resultat4) == 3 && Integer.parseInt(resultat1) == 1
+                    && Integer.parseInt(resultat3) == 1){
 
-                resultat[0] = (Integer.parseInt(tableau1[1].getText())*Integer.parseInt(tableau2[2].getText())) -
-                        (Integer.parseInt(tableau1[2].getText())*Integer.parseInt(tableau2[1].getText()));
+                for(int i = 0; i < resultat.length; i++){
 
-                resultat[1] = (Integer.parseInt(tableau1[2].getText())*Integer.parseInt(tableau2[0].getText())) -
-                        (Integer.parseInt(tableau1[0].getText())*Integer.parseInt(tableau2[2].getText()));
+                    resultat[0] = (Integer.parseInt(tableau1[1].getText())*Integer.parseInt(tableau2[2].getText())) -
+                            (Integer.parseInt(tableau1[2].getText())*Integer.parseInt(tableau2[1].getText()));
 
-                resultat[2] = (Integer.parseInt(tableau1[0].getText())*Integer.parseInt(tableau2[1].getText())) -
-                        (Integer.parseInt(tableau1[1].getText())*Integer.parseInt(tableau2[0].getText()));
+                    resultat[1] = (Integer.parseInt(tableau1[2].getText())*Integer.parseInt(tableau2[0].getText())) -
+                            (Integer.parseInt(tableau1[0].getText())*Integer.parseInt(tableau2[2].getText()));
+
+                    resultat[2] = (Integer.parseInt(tableau1[0].getText())*Integer.parseInt(tableau2[1].getText())) -
+                            (Integer.parseInt(tableau1[1].getText())*Integer.parseInt(tableau2[0].getText()));
+                }
+                reponse(resultat, "PRODUIT VECTORIEL");
             }
-
-            reponse(resultat, "PRODUIT VECTORIEL");
-        }
-        else {
-                                                                            // idem
+            else {
+                Vecto alert = new Vecto();
+                alert.creationAlerte();
+            }
         }
     }
 
@@ -427,30 +500,39 @@ public class Controller {
         int p = Integer.parseInt(resultat3);
         int q = Integer.parseInt(resultat4);
 
-        int[] etape1 = new int[p*q];
+        boolean entier = caractere(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A");
+        boolean entier2 = caractere(tableau2, Integer.parseInt(resultat3), Integer.parseInt(resultat4), "B");
 
-        int[][][] etape3 = new int[m*n][p][q];
-        int[][][][] resultat = new int[m][n][p][q];
+        if (entier == false && entier2 == false){
 
 
-        for (int j = 0; j < m*n ; j++) { //nb de valeur tabA
-            int[][] etape2 = new int[p][q];
+            // resultat dimensions mp x nq
+            int m = Integer.parseInt(resultat1);                        // presque parfait, marche pas si 2X3 et 3X2
+            int n = Integer.parseInt(resultat2);
+            int p = Integer.parseInt(resultat3);
+            int q = Integer.parseInt(resultat4);
 
-            //multiplication par un scalaire dans un tableau 1D
-            for (int i = 0; i < etape1.length; i++) {
-                try {
-                    etape1[i] = Integer.parseInt(tableau1[j].getText()) * Integer.parseInt(tableau2[i].getText()); //premiere valeur tabA avec toutes les valeurs tabB
-                } catch (Exception e) {
-                    emptySolo();
+            int[] etape1 = new int[p*q];
+
+            int[][][] etape3 = new int[m*n][p][q];
+            int[][][][] resultat = new int[m][n][p][q];
+
+            for (int j = 0; j < m*n ; j++) { //nb de valeur tabA
+                int[][] etape2 = new int[p][q];
+
+                //multiplication par un scalaire dans un tableau 1D
+                for (int i = 0; i < etape1.length; i++) {
+                    try {
+                        etape1[i] = Integer.parseInt(tableau1[j].getText()) * Integer.parseInt(tableau2[i].getText()); //premiere valeur tabA avec toutes les valeurs tabB
+                    } catch (Exception e) {
+                        emptySolo();
+                    }
                 }
 
-            }
-
-            //on prend ce tableau et on le transforme en 2D
-            for (int k = 0; k < etape1.length; k++){
-                etape2[k/q][k%q] = etape1[k];
-            }
-
+                //on prend ce tableau et on le transforme en 2D
+                for (int k = 0; k < etape1.length; k++){
+                    etape2[k/q][k%q] = etape1[k];
+                }
 
             //On prend ce tableau 2D et on le met dans un tableau de tableau 2D
             etape3[j] = etape2;
@@ -472,13 +554,6 @@ public class Controller {
                     for (int c = 0; c < q ; c++){ //lignes total
                         //position  matA  lignes, colonnes   mat B lignes colonnes    coordonnées colonnes, lignes
                         reponse.add(new Label(String.valueOf(resultat[i][j][k][c])), c + (j*q), k + (i*p));
-
-
-                    }
-                }
-               //
-            }
-
         }
             affichage(reponse, "PRODUIT TENSORIEL");
 
@@ -486,6 +561,7 @@ public class Controller {
 
 
     public void repMulti(int[][] corolaire, String operation){            
+
 
         GridPane reponse = new GridPane();
 
@@ -545,16 +621,6 @@ public class Controller {
 
     }
 
-    public void wrongDimensions(){ //message d'erreur qui va afficher
-
-        Alert alerte = new Alert(Alert.AlertType.INFORMATION);
-        alerte.setTitle("Information importante");
-        alerte.setHeaderText("Les dimensions des matrices A et B ne concordent pas!");
-        alerte.setContentText(
-                "Vous pouvez effectuer une autre opération ou bien cliquer sur démarrer");
-        alerte.showAndWait();
-    }
-
     public void emptyDouble(){ //message d'erreur qui va afficher si toutes les cases ne sont pas remplies
 
         Alert alerte = new Alert(Alert.AlertType.INFORMATION);
@@ -579,7 +645,7 @@ public class Controller {
 
         boolean vide = false;
 
-        int nombre = Integer.parseInt(resultat1) * Integer.parseInt(resultat2);
+        int nombre = Integer.parseInt(resultat1) * Integer.parseInt(resultat2);   //position
         for (int i = 0; i < nombre; i++) { //regarder s'il y a des cases vides
             if (tableau1[i].getText().isEmpty() || tableau2[i].getText().isEmpty()) { //Si oui, vide est vrai
                 vide = true;
@@ -588,6 +654,7 @@ public class Controller {
         }
         return vide;
     }
+
 
     public void affichage(GridPane reponse, String operation){
 
@@ -612,5 +679,36 @@ public class Controller {
 
         dialog.showAndWait();
     }
+    public boolean caractere(TextField[] tableau, int ligne, int colonne, String lettre){
 
+        boolean mauvais = false;
+
+        int nombre = ligne*colonne;
+
+        for (int i = 0; i < nombre; i++) {
+
+            char[] chars = tableau[i].getText().toCharArray();
+
+            for (int j = 0; j < chars.length; j++){
+
+                if (chars[j] < 48 || chars[j] > 57 ){
+
+                    mauvais = true;
+                }
+            }
+
+        }
+
+        if (mauvais == true){
+            Caractere alert = new Caractere();
+            alert.setLettre(lettre);
+            alert.creationAlerte();
+        }
+        return mauvais;
+
+    }
+
+//si reste temps
+    //dialogue héritage
+    //case vide héritage
 }

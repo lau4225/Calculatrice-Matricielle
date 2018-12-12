@@ -1,11 +1,14 @@
+package AlerteErreur;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
-public class Erreur extends Application {
+public class Erreurs extends Application {
 
     private String headerText;
     private String contentText;
+
 
     public String getHeaderText() {
         return headerText;
@@ -27,10 +30,16 @@ public class Erreur extends Application {
     public void start(Stage primaryStage) throws Exception {
 
 
+        primaryStage.show();
+    }
+
+    public ButtonType creationAlerte(){
+
         Alert alerte = new Alert(Alert.AlertType.INFORMATION);
-        alerte.setTitle("Erreur");
+        alerte.setTitle("Erreurs");
         alerte.setHeaderText(headerText);
         alerte.setContentText(contentText);
-        alerte.showAndWait();
+        return alerte.showAndWait().get();
+
     }
 }
