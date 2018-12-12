@@ -22,11 +22,14 @@ public class Main extends Application {
          */
 
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Scene scene = new Scene(root, 300, 275);
+
+        scene.getStylesheets().add("sample/style.css");
 
         primaryStage.setTitle("Calculatrice Matricielle");
         primaryStage.setMaximized(true);
         primaryStage.setResizable(true);
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(scene);
 
 
         primaryStage.show();
