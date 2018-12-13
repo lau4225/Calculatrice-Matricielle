@@ -688,14 +688,22 @@ public class Controller {
         for (Node r: reponse.getChildren()) {
             r.setScaleX(1.4); r.setScaleY(1.4); }
 
-        Button print = new Button("Imprimer");
-        print.setAlignment(Pos.BOTTOM_CENTER);
+
+        Button print = new Button("IMPRIMER");
+        print.setAlignment(Pos.BASELINE_CENTER);
         print.setMaxSize(100,18);
-        print.setScaleX(1.2);print.setScaleY(1.2);
+        print.setScaleX(1.1);print.setScaleY(1.1);
+
+     
 
         Dialog dialog = new Dialog();
 
         VBox vBox = new VBox(reponse, print);
+
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setFillWidth(true);
+        vBox.setSpacing(50);
+
 
         dialog.setResizable(true);
         dialog.setTitle(operation);
