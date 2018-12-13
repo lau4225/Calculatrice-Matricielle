@@ -1,6 +1,7 @@
 package sample;
 
 import AlerteErreur.*;
+import com.sun.javafx.geom.Matrix3f;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.print.PrinterJob;
@@ -259,15 +260,12 @@ public class Controller {
     Button detB;
 
     public void determinant(TextField[] tableau, int lignes, int colonnes, String lettre, TextField[][] tab2D){
-
-        boolean entier = caractere(tableau, lignes, colonnes, lettre);
-
-        if (entier == false){
             //regarder si la matrice est carré
             if (lignes == colonnes){
-
                 if (casesVidesSolo(tableau, lignes*colonnes)){emptySolo();}
                 else {
+                boolean entier = caractere(tableau, lignes, colonnes, lettre);
+                if (entier == false){
                     //transformer toutes les textfield
                     int[] tempo = new int[lignes * colonnes];
                     int det = 0;
@@ -289,102 +287,59 @@ public class Controller {
                                     ((tempo[6] * tempo[4] * tempo[2]) + (tempo[7] * tempo[5] * tempo[0]) + (tempo[8] * tempo[3] * tempo[1]));
                             repDeterminant(det, lettre);
                             break;
-
                         default:
-
-                            int lines = lignes;
-                            int columns = colonnes;
-                            int nbrFois = 0;
-                            int x = 0;
-                            int y = 0;
-                            int[][] matrice = new int[lignes][colonnes];
-                            int[] line = new int[colonnes];
-                            //élément à multiplier au coefficient
-                            for (int i = 0; i < colonnes; i++) {
-                                line[i] = Integer.parseInt(tableau[i].getText());
-                            }
+                            int[][] matrix = new int[lignes][colonnes];
                             for (int i = 0; i < lignes; i++) {
                                 for (int j = 0; j < colonnes; j++) {
-                                    matrice[i][j] = Integer.parseInt(tab2D[i][j].getText());
-                                    if ((i + j) % 2 == 1) {
-                                        matrice[i][j] = matrice[i][j] * -1;
-                                    }
+                                    matrix[i][j] = Integer.parseInt(tab2D[i][j].getText());
+
                                 }
                             }
 
-
-                            //sous-matrice
-                            int[][] sousMatrice = new int[lignes - 1][colonnes - 1];
-
-                            //int[][][] total = new int[lignes][lignes - 1][colonnes -1];
-
-                            //toutes les sous-matrices
-
-                            while (lines != 2 && columns != 2) {
-
-                            }
-                            for (int i = 0; i < lignes; i++) {
-                                for (int j = 0; j < colonnes - 1; i++) {
-                                    x = i;
-                                    y = j;
-                                    sousMatrice = sousMatrices(matrice, lignes, colonnes, x, y);
-                                    line[i] = line[i] * sousMatrice[0][j] * (int) Math.pow(-1, j);
-                                }
-                            }
-                            nbrFois++;
+                            repDeterminant(calculDet(matrix), lettre);
+                            //https://gist.github.com/Cellane/398372/23a3e321daa52d4c6b68795aae093bf773ce2940
 
 
-                            if (sousMatrice.length == 4) {
-                                //calcul det
-                                for (int i = 0; i < lines; i++) {
-                                    for (int j = 0; j < columns; j++) {
-
-                                        det = det + ((int) Math.pow(-1, i + j) * line[i] * calculDet2(sousMatrice));
-                                    }
-                                }
-                            }
-                       /* else {
-                           int lignes2 = lignes - nbrFois;
-                           int colonnes2 = colonnes- nbrFois;
-
-
-                            sousMatrice = sousMatrices(sousMatrice, lignes2, colonnes2, x, y);
-                        }*/
-                            repDeterminant(det, lettre);
                     }
-
                 }
-            }else{
-                Carrée alert = new Carrée();
-                alert.creationAlerte();
             }
         }
+        else{
+                Carrée alert = new Carrée();
+                alert.creationAlerte(); }
     }
 
-    public int calculDet2(int[][] mat){
 
-        int det = mat[0][0]*mat[1][1] - mat[0][1]*mat[1][0];
-        return det;
-    }
+    public int calculDet(int[][] matrix){
+        int det = 0;
 
-    public int[][] sousMatrices(int[][] mat, int lignes, int colonnes, int x, int y){
+        if (matrix.length == 1) {
+            det = matrix[0][0];
+            return (det);
+        }
 
-        int line = lignes -1;
-        int column = colonnes -1;
+        if (matrix.length == 2) {
+            det = ((matrix[0][0] * matrix[1][1]) - (matrix[0][1] * matrix[1][0]));
+            return (det);
+        }
 
-        int[][] sousMat = new int[line][column];
+        for (int i = 0; i < matrix[0].length; i++) {
+            int[][] temporary = new int[matrix.length - 1][matrix[0].length - 1];
 
-       //sousmat
-       for (int i = 0; i < line; i++){
-           for (int j = 0; j < column; j++){
+            for (int j = 1; j < matrix.length; j++) {
+                for (int k = 0; k < matrix[0].length; k++) {
+                    if (k < i) {
+                        temporary[j - 1][k] = matrix[j][k];
+                    } else if (k > i) {
+                        temporary[j - 1][k - 1] = matrix[j][k];
+                    }
+                }
+            }
 
-               if (i != x | j != y){
-                   sousMat[i][j] = mat[i][j];
-               }
+            det += matrix[0][i] * Math.pow (-1, i) * calculDet (temporary);
+        }
+        return (det);
 
-           }
-       }
-        return sousMat;
     }
 
     public void determinantA(){determinant(tableau1, Integer.parseInt(resultat1), Integer.parseInt(resultat2), "A", tab2DA);}
@@ -771,7 +726,7 @@ public class Controller {
                 new ButtonType("OK DONE", ButtonBar.ButtonData.OK_DONE)
 
         );
-        dialog.getDialogPane().setMinSize(250, 200);
+        dialog.getDialogPane().setMinSize(500, 500);
         print.setOnAction(event -> {
             imprimer(dialog);
         });

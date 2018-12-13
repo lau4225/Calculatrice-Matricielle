@@ -15,12 +15,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        /*
-        Faire une classe matrice qui est un tableau
-        faire une classe matriceView qui elle hérite de GRIDPANE
-        listener et bind bidirectional ou juste bind la position du gridpane avec la position du tableau
-         */
-
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         Scene scene = new Scene(root, 300, 275);
 
@@ -30,7 +24,6 @@ public class Main extends Application {
         primaryStage.setMaximized(true);
         primaryStage.setResizable(true);
         primaryStage.setScene(scene);
-
 
         primaryStage.show();
     }
