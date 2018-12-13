@@ -6,8 +6,8 @@ import javafx.geometry.Pos;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 public class Controller {
     @FXML
@@ -344,6 +344,101 @@ public class Controller {
         dialog.getDialogPane().setMinSize(200, 200);
         dialog.showAndWait();
     }
+
+    public void inversion(int lignes, int colonnes, TextField[][] mat, TextField[] tab, String lettre){
+
+        int[][] matInt = new int[lignes][colonnes];
+        int[][] coefficient = new int[lignes][colonnes];
+        int[][] inverse = new int[lignes][colonnes];
+        boolean entier = caractere(tab, lignes, colonnes, lettre);
+
+        for (int i = 0; i < lignes; i++){
+            for (int j = 0; j < colonnes; j++){
+
+                matInt[i][j] = Integer.parseInt(mat[i][j].getText());
+            }
+        }
+        if (casesVidesSolo(tab, lignes*colonnes)){emptySolo();}
+        else {
+            if (entier == false){
+
+                if (lignes == colonnes){  //pour calculer le déteminant, la matrice doit être carrée
+
+                    int det =  calculDet(matInt);
+
+                    if (det != 0){  //la matrice doit être régulière
+
+                        for (int i = 0; i < lignes; i++){
+                            for (int j = 0; j < colonnes; j++){
+
+                                coefficient[i][j] = sousMatrice(lignes, colonnes, matInt, i, j);
+                            }
+                        }
+
+                        for (int i = 0; i < lignes; i++){
+                            for (int j = 0; j < colonnes; j++){
+
+                                inverse[i][j] = 1/det* (int) Math.pow(-1, i+j)* coefficient[i][j];
+                            }
+                        }
+
+                        for (int i = 0; i < lignes; i++){
+                            for (int j = 0; j < colonnes; j++){
+
+                                inverse[i][j] = inverse[j][i];
+                            }
+                        }
+
+                        repTranspo(inverse, lignes, colonnes);
+                    }
+                    else {
+                        Reguliere alert = new Reguliere();
+                        alert.creationAlerte();
+                    }
+                }
+                else {
+                    Carrée alerte = new Carrée();
+                    alerte.creationAlerte();
+                }
+            }
+            else {
+                Caractere alert = new Caractere();
+                alert.creationAlerte();
+            }
+        }
+
+            System.out.println(inverse[0][0]);
+
+    }
+
+    public int sousMatrice(int lignes, int colonne, int[][] matrice, int x, int y){
+
+        int[][] sousMat = new int[lignes - 1][colonne -1];
+        int element = 0;
+
+       /* for (int i = 0; i < lignes -1 ; i++){  //trouver condition
+            for (int j = 0; j < colonne -1; j++){
+
+                if (i != x && j != y){ //marche pas
+                    sousMat[i][j] = matrice[i][j];
+                }
+            }
+        }*/
+
+       /* for (int i = 1; i < matrice.length; i++) {
+            for (int j = 0; j < matrice[0].length; j++) {
+                if (k < i) {
+                    sousMat[j - 1][k] = matrice[j][k];
+                } else if (k > i) {
+                    sousMat[j - 1][k - 1] = matrice[j][k];
+                }
+            }
+        }*/
+        element = calculDet(sousMat);
+        return element;
+    }
+    public void inversionA(){inversion(Integer.parseInt(resultat1), Integer.parseInt(resultat2), tab2DA, tableau1, "A");}
+    public void inversionB(){inversion(Integer.parseInt(resultat3), Integer.parseInt(resultat4), tab2DB, tableau2, "B");}
 
     public void multiplier() {//Condition pour l'addition : si A (m x n) et B (n x p)
 
