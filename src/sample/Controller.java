@@ -1,7 +1,6 @@
 package sample;
 
 import AlerteErreur.*;
-import com.sun.javafx.geom.Matrix3f;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.print.PrinterJob;
@@ -266,48 +265,22 @@ public class Controller {
                 else {
                 boolean entier = caractere(tableau, lignes, colonnes, lettre);
                 if (entier == false){
-                    //transformer toutes les textfield
-                    int[] tempo = new int[lignes * colonnes];
-                    int det = 0;
 
-                    for (int i = 0; i < tempo.length; i++) {
-                        tempo[i] = Integer.parseInt(tableau[i].getText());
+                    int[][] matrix = new int[lignes][colonnes];
+                    for (int i = 0; i < lignes; i++) {
+                        for (int j = 0; j < colonnes; j++) {
+                            matrix[i][j] = Integer.parseInt(tab2D[i][j].getText());
+                        }
                     }
-                    switch (lignes) {
-                        case 1:
-                            repDeterminant(tempo[0], lettre);
-                            break;
-                        case 2:
-                            det = (tempo[0] * tempo[3]) - (tempo[1] * tempo[2]);
-                            repDeterminant(det, lettre);
-                            break;
-
-                        case 3:
-                            det = ((tempo[0] * tempo[4] * tempo[8]) + (tempo[1] * tempo[5] * tempo[6]) + (tempo[2] * tempo[3] * tempo[7])) -
-                                    ((tempo[6] * tempo[4] * tempo[2]) + (tempo[7] * tempo[5] * tempo[0]) + (tempo[8] * tempo[3] * tempo[1]));
-                            repDeterminant(det, lettre);
-                            break;
-                        default:
-                            int[][] matrix = new int[lignes][colonnes];
-                            for (int i = 0; i < lignes; i++) {
-                                for (int j = 0; j < colonnes; j++) {
-                                    matrix[i][j] = Integer.parseInt(tab2D[i][j].getText());
-
-                                }
-                            }
-
                             repDeterminant(calculDet(matrix), lettre);
                             //https://gist.github.com/Cellane/398372/23a3e321daa52d4c6b68795aae093bf773ce2940
-
-
                     }
                 }
             }
-        }
-        else{
+            else{
                 Carrée alert = new Carrée();
                 alert.creationAlerte(); }
-    }
+        }
 
 
     public int calculDet(int[][] matrix){
@@ -352,12 +325,20 @@ public class Controller {
         reponse.setScaleX(1.4);reponse.setScaleY(1.4);
         reponse.setAlignment(Pos.CENTER);
 
+        Button print = new Button("Imprimer");
+        print.setAlignment(Pos.BOTTOM_CENTER);
+        print.setMaxSize(100,18);
+        print.setScaleX(1.2);print.setScaleY(1.2);
+
+        VBox vBox = new VBox(reponse, print);
+
         Dialog dialog = new Dialog();
         dialog.setHeaderText("Le déterminat de la matrice " + lettre + " est : ");
-        dialog.getDialogPane().setContent(reponse);
+        dialog.getDialogPane().setContent(vBox);
         dialog.setTitle("DÉTERMINANT");
+        dialog.getDialogPane().getStylesheets().add("sample/style.css");
         dialog.getDialogPane().getButtonTypes().add(
-                new ButtonType("Clear", ButtonBar.ButtonData.OK_DONE)
+                new ButtonType("FERMER", ButtonBar.ButtonData.OK_DONE)
         );
 
         dialog.getDialogPane().setMinSize(200, 200);
@@ -707,25 +688,31 @@ public class Controller {
         for (Node r: reponse.getChildren()) {
             r.setScaleX(1.4); r.setScaleY(1.4); }
 
+
         Button print = new Button("IMPRIMER");
         print.setAlignment(Pos.BASELINE_CENTER);
         print.setMaxSize(100,18);
         print.setScaleX(1.1);print.setScaleY(1.1);
 
+     
+
         Dialog dialog = new Dialog();
 
         VBox vBox = new VBox(reponse, print);
+
         vBox.setAlignment(Pos.CENTER);
         vBox.setFillWidth(true);
         vBox.setSpacing(50);
+
 
         dialog.setResizable(true);
         dialog.setTitle(operation);
         dialog.setHeaderText("Matrice Résultante : ");
         dialog.getDialogPane().setContent(vBox);
+        dialog.getDialogPane().getStylesheets().add("sample/style.css");
 
         dialog.getDialogPane().getButtonTypes().add(
-                new ButtonType("OK DONE", ButtonBar.ButtonData.OK_DONE)
+                new ButtonType("FERMER", ButtonBar.ButtonData.OK_DONE)
 
         );
         dialog.getDialogPane().setMinSize(500, 500);
