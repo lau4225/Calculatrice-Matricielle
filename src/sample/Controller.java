@@ -375,10 +375,12 @@ public class Controller {
                             }
                         }
 
-                        for (int i = 0; i < lignes; i++){
-                            for (int j = 0; j < colonnes; j++){
 
-                                inverse[i][j] = 1/det* (int) Math.pow(-1, i+j)* coefficient[i][j];
+
+                        for (int i = 0; i < lignes; i++){
+                            for (int j = 0; j < colonnes; j++){   // les éléments sont toujours des fractions et java arrondie toujous à 0
+
+                                inverse[i][j] = ((int) Math.pow(-1, i+j) * coefficient[i][j]) / det;
                             }
                         }
 
@@ -389,7 +391,7 @@ public class Controller {
                             }
                         }
 
-                        repTranspo(inverse, lignes, colonnes);
+                        repTranspo(inverse, lignes, colonnes); //revoir affichage
                     }
                     else {
                         Reguliere alert = new Reguliere();
@@ -413,27 +415,25 @@ public class Controller {
 
     public int sousMatrice(int lignes, int colonne, int[][] matrice, int x, int y){
 
-        int[][] sousMat = new int[lignes - 1][colonne -1];
         int element = 0;
+        int[][] sousMat = new int[matrice.length - 1][matrice[0].length - 1];
 
-       /* for (int i = 0; i < lignes -1 ; i++){  //trouver condition
-            for (int j = 0; j < colonne -1; j++){
+            for (int j = 0; j < matrice.length; j++) {
+                for (int k = 0; k < matrice[0].length; k++) {
+                    if (k != y && j != x) {
 
-                if (i != x && j != y){ //marche pas
-                    sousMat[i][j] = matrice[i][j];
+                        if (x < sousMat.length && y < sousMat.length){
+                            sousMat[x][y] = matrice[j][k];
+                        }
+                        else {
+                            sousMat[x+1][y-1] = matrice[j][k];  //arrayOutOfBound
+                        }
+                        y++;
+                    }
                 }
-            }
-        }*/
 
-       /* for (int i = 1; i < matrice.length; i++) {
-            for (int j = 0; j < matrice[0].length; j++) {
-                if (k < i) {
-                    sousMat[j - 1][k] = matrice[j][k];
-                } else if (k > i) {
-                    sousMat[j - 1][k - 1] = matrice[j][k];
-                }
             }
-        }*/
+            x++;
         element = calculDet(sousMat);
         return element;
     }
