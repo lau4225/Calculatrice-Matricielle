@@ -6,8 +6,13 @@ import javafx.geometry.Pos;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
-import javafx.scene.layout.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class Controller {
     @FXML
@@ -42,20 +47,24 @@ public class Controller {
         try {
             creation(nbTextA, Integer.parseInt(resultat1), Integer.parseInt(resultat2), tableau1, matA, tab2DA);
             creation(nbTextB, Integer.parseInt(resultat3), Integer.parseInt(resultat4), tableau2, matB, tab2DB);
-        }catch (Exception e){ }
+        }catch (Exception e){ System.out.print("Exception dialog");}
     }
 
     public String size (String lettre, String choix){
-
+        String resultat = "";
         boolean trouve = false;
 
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Matrice " + lettre);
         dialog.setHeaderText("Création");
         dialog.setContentText("Entrez le nombre de " + choix);
-        String resultat = dialog.showAndWait().get();
-
-
+        try {
+            resultat = dialog.showAndWait().get();
+        }catch (Exception e){
+            System.out.print("il n'y a rien d'entré");
+            dialog.close();
+            return null;
+        }
         while (trouve == false){
 
             for (int i = 0; i<resultat.length(); i++){
@@ -783,8 +792,71 @@ public class Controller {
 
     }
 
-//si reste temps
-    //dialogue héritage
-    //case vide héritage
+    @FXML
+    MenuItem importA;
+    @FXML
+    MenuItem importB;
+
+    public void fileA(){ readFile("src/sample/donneesA.csv", matA, tab2DA, tableau2, matB, tab2DB); }
+    public void fileB(){ readFile("src/sample/donneesB.csv", matB, tab2DB, tableau1, matA, tab2DA); }
+
+
+
+    public void readFile(String path, GridPane matrice, TextField[][] tableau2D, TextField[] tabOther, GridPane matOther, TextField[][] tab2DOther ){
+        matrice.getChildren().clear();
+        int lignes = 0;
+        int colonnes = 0;
+        TextField[] tab = new TextField[1];
+        try{
+                List<String> list = Files.readAllLines(Paths.get(path));
+                lignes = list.size();
+                int compteur = -1;
+                String[] nbColumn = list.get(0).split(",");
+                colonnes = nbColumn.length;
+                tab = new TextField[nbColumn.length*lignes];
+
+                for (int i = 0; i < list.size(); i++) {
+                    String[] parties = list.get(i).split(",");
+
+                    for (int j = 0; j<parties.length; j++){
+                        compteur++;
+                        tab[compteur] = new TextField();
+                        tab[compteur].setText(parties[j]);
+                    }
+                }
+        }catch (ArrayIndexOutOfBoundsException e){
+            System.out.print("Erreur tableau -1");
+        }
+        catch (IOException e){
+            System.out.print("Erreur dans la lecture du fichier csv");
+        }
+
+        try {
+            fichierCreation(tab.length, lignes, colonnes, tab, matrice, tableau2D );
+            if (matOther.getChildren().isEmpty()){
+                creation(9, 3, 3, tabOther, matOther, tab2DOther); }
+
+        }catch (Exception e){ }
+
+    }
+
+    public void fichierCreation(int nbTextField, int nbLignes, int nbColonnes, TextField[] tableau, GridPane matrice, TextField[][] tableau2D) {
+
+        for (int i = 0; i < nbTextField; i++) {
+            int col = i % (nbColonnes);
+            int row = (i / nbColonnes);
+            matrice.add(tableau[i], col, row);
+        }
+        //Creation des tableaux 2D
+        int k = 0;
+        for (int i = 0; i < nbLignes; i++) {
+
+            for (int j = 0; j < nbColonnes; j++) {
+
+                tableau2D[i][j] = tableau[k];
+                k++;
+            }
+        }
+    }
 
 }
