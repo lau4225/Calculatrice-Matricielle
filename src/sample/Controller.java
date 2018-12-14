@@ -277,7 +277,7 @@ public class Controller {
                         }
                     }
                             repDeterminant(calculDet(matrix), lettre);
-                            //https://gist.github.com/Cellane/398372/23a3e321daa52d4c6b68795aae093bf773ce2940
+
                     }
                 }
             }
@@ -286,7 +286,7 @@ public class Controller {
                 alert.creationAlerte(); }
         }
 
-
+    //https://gist.github.com/Cellane/398372/23a3e321daa52d4c6b68795aae093bf773ce2940
     public int calculDet(int[][] matrix){
         int det = 0;
 
@@ -529,13 +529,9 @@ public class Controller {
                             int nbrMulti = 1;
 
                             while (nbrMulti < exposant) {
-
                                 for (int i = 0; i < lignes; i++) { //nb de lignes
-
                                     for (int j = 0; j < colonnes; j++) {  // nb colonnes
-
                                         for (int k = 0; k < lignes; k++) {
-
                                             try {
                                                 produit = Integer.parseInt(tableau[i][k].getText()) * Integer.parseInt(tableau[k][j].getText());
                                                 repC = repC + produit;
@@ -588,7 +584,6 @@ public class Controller {
                     resultat[2] = (Integer.parseInt(tableau1[0].getText())*Integer.parseInt(tableau2[1].getText())) -
                             (Integer.parseInt(tableau1[1].getText())*Integer.parseInt(tableau2[0].getText()));
                 }
-
                 reponse(resultat, "PRODUIT VECTORIEL");
             }
             else {
@@ -618,7 +613,6 @@ public class Controller {
                 int q = Integer.parseInt(resultat4);
 
                 int[] etape1 = new int[p * q];
-
                 int[][][] etape3 = new int[m * n][p][q];
                 int[][][][] resultat = new int[m][n][p][q];
 
@@ -633,7 +627,6 @@ public class Controller {
                             emptySolo();
                         }
                     }
-
                     //on prend ce tableau et on le transforme en 2D
                     for (int k = 0; k < etape1.length; k++) {
                         etape2[k / q][k % q] = etape1[k];
@@ -648,26 +641,18 @@ public class Controller {
                     //ajouter les valeurs au gridpane
                     resultat[r / n][r % n] = etape3[r];
                 }
-
                 GridPane reponse = new GridPane();
-
-
                 for (int i = 0; i < m; i++) { //lignes
                     for (int j = 0; j < n; j++) { //colonnes
                         for (int k = 0; k < p; k++) { //colonnes total
                             for (int c = 0; c < q; c++) { //lignes total
                                 //position  matA  lignes, colonnes   mat B lignes colonnes    coordonnées colonnes, lignes
                                 reponse.add(new Label(String.valueOf(resultat[i][j][k][c])), c + (j * q), k + (i * p));
-
-
                             }
                         }
-
                     }
-
                 }
                 affichage(reponse, "PRODUIT TENSORIEL");
-
             }
         }
     }
@@ -680,12 +665,9 @@ public class Controller {
         for (int i = 0; i< Integer.parseInt(resultat4); i++){
             for (int j =0; j < Integer.parseInt(resultat1); j++){
                 reponse.add(new Label(String.valueOf(corolaire[j][i])), i, j);
-
             }
         }
-
         affichage(reponse, operation);
-
     }
 
 
@@ -696,12 +678,9 @@ public class Controller {
         GridPane reponse = new GridPane();
 
         for (int i = 0; i< corolaire.length; i++){
-
             reponse.add(new Label(String.valueOf(corolaire[i])), i%Integer.parseInt(resultat2), (int) (i/ Integer.parseInt(resultat2)));
         }
-
         affichage(reponse, operation);
-
     }
 
         //reponse d'une opération sur une seule matrice
@@ -713,9 +692,7 @@ public class Controller {
             //ajouter les valeurs au gridpane
             reponse.add(new Label(String.valueOf(corolaire[i])), i%colonnes, (int) (i/colonnes));
         }
-
         affichage(reponse, operation);
-
     }
 
     public void repTranspo(int[][] corolaire, int lignes, int colonnes){
@@ -725,12 +702,9 @@ public class Controller {
         for (int i = 0; i< lignes; i++){
             for (int j =0; j < colonnes; j++){
                 reponse.add(new Label(String.valueOf(corolaire[i][j])), j, i);
-
             }
         }
-
         affichage(reponse, "TRANSPOSITION");
-
     }
 
     public void emptyDouble(){ //message d'erreur qui va afficher si toutes les cases ne sont pas remplies
@@ -762,7 +736,6 @@ public class Controller {
             if (tableau1[i].getText().isEmpty() || tableau2[i].getText().isEmpty()) { //Si oui, vide est vrai
                 vide = true;
             }
-
         }
         return vide;
     }
@@ -774,7 +747,6 @@ public class Controller {
             if (tableau[i].getText().isEmpty()) { //Si oui, vide est vrai
                 vide = true;
             }
-
         }
         return vide;
     }
@@ -866,7 +838,6 @@ public class Controller {
             alerte.showAndWait();
             nb.setText("");
         }
-
         return mauvaisNb;
     }
 
@@ -878,8 +849,6 @@ public class Controller {
                 job.endJob();
             }
         }
-
-
     }
 
     @FXML
@@ -889,8 +858,6 @@ public class Controller {
 
     public void fileA(){ readFile("src/sample/donneesA.csv", matA, tab2DA, tableau2, matB, tab2DB); }
     public void fileB(){ readFile("src/sample/donneesB.csv", matB, tab2DB, tableau1, matA, tab2DA); }
-
-
 
     public void readFile(String path, GridPane matrice, TextField[][] tableau2D, TextField[] tabOther, GridPane matOther, TextField[][] tab2DOther ){
         matrice.getChildren().clear();
