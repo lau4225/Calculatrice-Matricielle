@@ -16,4 +16,31 @@
     -fx-text-fill: wheat;
 }
 
+.menu-bar{
+    -fx-font-style: normal;
+    -fx-font: 14 "Calibri" ;
+    -fx-background-color: darkcyan;
+    -fx-text-fill: darkslategrey;
+    -fx-prompt-text-fill: wheat;
+
+}
+
+.menu{
+    -fx-font-style: normal;
+    -fx-font: 14 "Calibri" ;
+    -fx-background-color: darkcyan;
+    -fx-border-color: darkcyan;
+    -fx-text-fill: darkslategrey;
+    -fx-prompt-text-fill: wheat;
+}
+
+.menu-item{
+    -fx-font-style: normal;
+    -fx-font: 14 "Calibri" ;
+    -fx-background-color: darkcyan;
+    -fx-border-color: darkcyan;
+    -fx-text-fill: darkslategrey;
+    -fx-prompt-text-fill: wheat;
+}
+
 
